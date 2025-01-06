@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binary Pattern Generator v0.5</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <script>
+        const functions = [
+    "((((-x) * (y ^ param1)) / (~(x | param2))) & (((4 + y) % (~x)) * ((y | y) | (x % param3)))) % 10",
+    "((((param1 - y) & (x & x)) ^ ((x * param2) ^ (y & param2))) % (((-y) * (y + 20)) + ((x ^ param3) * (y * y)))) % param3",
+    "((((x % param1) - (param2 / y)) | ((~x) - (-y))) ^ (((y & y) - (x | y)) + ((y + y) * (x * y)))) % param3",
+    "((((y - x) | (param1 / x)) / (~(y ^ x))) * ((~(~y)) & (~(y & param2)))) % param3",
+    "((((y | x) & (~y)) | ((~x) ** (y & y))) & (((x ^ y) & (x * param1)) - ((-y) - (x & y)))) % param2",
+    "((((~y) & (-param1 * x)) | (-(y & y))) - (((-x) / (-param2 * y)) | (~(y % x)))) % param3",
+    "((((~y) % (x - param1)) - (-(~y))) - (((~x) - (y / param2)) & (-(1 ^ y)))) % param3",
+    "(((-(y / param1)) / ((x | param2) & (x / y))) | ((-(x / x)) - (-(x / param3)))) % 8",
+    "((-((21 - x) ^ (y + param1))) + (((y | y) * (y * x)) | ((param2 + x) & (param3 - x)))) % 5",
+    "((-((param1 % y) + (y % y))) & ((~(~x)) & ((x % param2) % (y + 3)))) % param3",
+    "((-((x | y) | (param1 & y))) ^ (((x / y) * (~y)) % ((x & param2) & (~y)))) % param3",
+    "((-((x | y) | (param1 * y))) ^ (((x / y) * (~y)) % ((x & param2) & (~y)))) % param3",
+    "((-((~y) * (y | x))) * ((~(~y)) % (-(x - y)))) % param1",
+    "((~((param1 & x) - (y * x))) % (((-x) ^ (y / y)) - (-(param2 ^ x)))) % param3",
+    "((~((x * param1) % (x + y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3",
+    "(x | y) & ((x ^ param1) | (y & param2))",
+    "((((x + param1) ^ (x | x)) | (~(-y))) % (~(~(param2 & x)))) % param3",
+    "((((~x) * (y * y)) ^ (~(~x))) & ((-(-x)) / ((y / param1) | (y - param2)))) % param3",
+    "((((-x) % (-y)) & ((param1 / x) * (x - x))) | (((y - 19) ^ (y + param2)) % ((y & x) % (x ^ y)))) % param3",
+    "(((-(x * y)) * (-(x % param1))) & (-(~(x * x)))) % param2",
+    "((((y | y) % (param1 % x)) - (-(y / param2))) + ((~(x / param3)) - ((x - y) | (x - y)))) % 4",
+    "(~(((y * y) * (-x)) - ((x / y) % (~x)))) % param1",
+    "((~(-(param1 * x - y))) % (((~y) - (x - param2)) | (~(y & x)))) % param3",
+    "(~(((param1 - x) ^ (x & y)) & ((~param2) * (y ^ x)))) % param3",
+    "(~(((param1 - x) ^ (x & y)) & ((~x) * (y ^ x) * param2))) % param3"
+        ];
+
+    </script>
+
+
+    <div class="sidebar">
+        <div class="title">Pattern Controls</div>
+        <div class="control-group">
+            <label for="param1">Parameter 1 (1-50):</label>
+            <input type="range" id="param1" min="1" max="50" value="11">
+        </div>
+        <div class="control-group">
+            <label for="param2">Parameter 2 (1-100):</label>
+            <input type="range" id="param2" min="1" max="100" value="15">
+        </div>
+        <div class="control-group">
+            <label for="param3">Parameter 3 (1-50):</label>
+            <input type="range" id="param3" min="1" max="50" value="3">
+        </div>
+        <div class="control-group">
+            <label for="invert">Invert:</label>
+            <input type="checkbox" id="invert">
+        </div>
+        <div class="control-group">
+            <label for="function-code">Pattern Function:</label>
+            <textarea id="function-code">function f(x, y, param1, param2, param3) {
+    if (x === 0) return 0;
+    
+    const part1 = bitwiseAnd(x, x) % (y - param1);
+    const part2 = -(Math.floor(param2 / x));
+    const part3 = bitwiseNot(bitwiseXor(y, param3) + bitwiseNot(y));
+    
+    return bitwiseAnd(part1 - part2, part3) % param1;
+}</textarea>
+        </div>
+        <div class="button-group">
+            <button id="update-btn">Update Pattern</button>
+            <button id="save-btn">Save Image</button>
+            <button id="save4x-btn">Save 4X</button>
+        </div>
+        <br />
+        <div class="button-group">
+            <button id="rndfn-btn">Random function f()</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Binary Pattern Generator ver. 0.5</h1>
+        <canvas id="canvas" width="768" height="768"></canvas>
+    </div>
+
+    <script>
+        function bitwiseOr(a, b)  { return a | b; }
+        function bitwiseAnd(a, b) { return a & b; }
+        function bitwiseXor(a, b) { return a ^ b; }
+        function bitwiseNot(n)    { return ~n; }
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const scale = 3;
+        const baseSize = 256;
+        
+        const bufferCanvas = document.createElement('canvas');
+        bufferCanvas.width = baseSize;
+        bufferCanvas.height = baseSize;
+        const bufferCtx = bufferCanvas.getContext('2d');
+        const imageData = bufferCtx.createImageData(baseSize, baseSize);
+
+        const param1Input = document.getElementById('param1');
+        const param2Input = document.getElementById('param2');
+        const param3Input = document.getElementById('param3');
+        const invertInput = document.getElementById('invert');
+        const functionCode = document.getElementById('function-code');
+        const updateBtn = document.getElementById('update-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const save4xBtn = document.getElementById('save4x-btn');
+        const rnfFnBtn = document.getElementById('rndfn-btn');
+
+        let updateTimeout = null;
+
+        function updatePattern() {
+            if (updateTimeout) {
+                clearTimeout(updateTimeout);
+            }
+
+            updateTimeout = setTimeout(() => {
+                const param1 = parseInt(param1Input.value);
+                const param2 = parseInt(param2Input.value);
+                const param3 = parseInt(param3Input.value);
+                const invert = invertInput.checked;
+
+                try {
+                    eval(functionCode.value);
+                    
+                    const data = imageData.data;
+                    for (let y = 0; y < baseSize; y++) {
+                        for (let x = 0; x < baseSize; x++) {
+                            let value = f(x, y, param1, param2, param3) % 2;
+                            if (invert) value = 1 - value;
+                            const color = value * 255;
+                            
+                            const idx = (y * baseSize + x) * 4;
+                            data[idx] = data[idx + 1] = data[idx + 2] = color;
+                            data[idx + 3] = 255;
+                        }
+                    }
+                    
+                    bufferCtx.putImageData(imageData, 0, 0);
+                    
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(bufferCanvas, 0, 0, canvas.width, canvas.height);
+                    
+                } catch (error) {
+                    alert('Error in function code: ' + error.message);
+                }
+            }, 50);
+        }
+
+        function flipCanvas(originalCanvas) {
+            // Create a new canvas with the same dimensions
+            const flippedCanvas = document.createElement('canvas');
+            const width = originalCanvas.width;
+            const height = originalCanvas.height;
+            flippedCanvas.width = width;
+            flippedCanvas.height = height;
+            
+            // Get the context for both canvases
+            const ctx = flippedCanvas.getContext('2d');
+            
+            // Save the current context state
+            ctx.save();
+            
+            // Translate and scale to flip both horizontally and vertically
+            ctx.translate(width, height);
+            ctx.scale(-1, -1);
+            
+            // Draw the original canvas onto the new one
+            ctx.drawImage(originalCanvas, 0, 0);
+            
+            // Restore the context state
+            ctx.restore();
+            
+            return flippedCanvas;
+        }
+
+        function saveImage() {
+            const link = document.createElement('a');
+            link.download = 'pattern.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function saveImage4X() {
+
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = canvas.width * 2;
+            tempCanvas.height = canvas.height * 2;
+
+            // Draw original (top-left)
+            tempCtx.drawImage(canvas, 0, 0);
+
+            // Draw horizontally flipped (top-right)
+            tempCtx.save();
+            tempCtx.translate(canvas.width * 2, 0);
+            tempCtx.scale(-1, 1);
+            tempCtx.drawImage(canvas, 0, 0);
+            tempCtx.restore();
+
+            // Draw vertically flipped (bottom-left)
+            tempCtx.save();
+            tempCtx.translate(0, canvas.height * 2);
+            tempCtx.scale(1, -1);
+            tempCtx.drawImage(canvas, 0, 0);
+            tempCtx.restore();
+
+            // Draw both flipped (bottom-right)
+            tempCtx.save();
+            tempCtx.translate(canvas.width * 2, canvas.height * 2);
+            tempCtx.scale(-1, -1);
+            tempCtx.drawImage(canvas, 0, 0);
+            tempCtx.restore();
+
+            // Save the combined image
+            const link = document.createElement('a');
+            link.download = 'pattern.png';
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+
+        }
+
+        const functionPrefix = `function f(x, y, param1, param2, param3) {
+if (x === 0) return 0;
+        
+return `;
+
+        const functionPostfix = `
+}
+        `;
+        function selectRandomFunction() {
+            const randomIndex = Math.floor(Math.random() * functions.length);
+            const textarea = document.getElementById('function-code');
+            textarea.value = functionPrefix + functions[randomIndex] + functionPostfix;
+
+            updatePattern();
+        }
+
+        param1Input.addEventListener('input', updatePattern);
+        param2Input.addEventListener('input', updatePattern);
+        param3Input.addEventListener('input', updatePattern);
+        invertInput.addEventListener('change', updatePattern);
+        updateBtn.addEventListener('click', updatePattern);
+        saveBtn.addEventListener('click', saveImage);
+        save4xBtn.addEventListener('click', saveImage4X);
+        rnfFnBtn.addEventListener('click', selectRandomFunction);
+
+        updatePattern();
+    </script>
+</body>
+</html>
