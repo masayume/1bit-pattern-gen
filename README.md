@@ -10,4 +10,4 @@
 
     The code does not resort to evaluating a string. 
 
-    ![1bit pattern generator UI screenshot](img/bitartbot.gif)
+    ![1bit pattern generator UI screenshot](/img/bitartbot.gif)
