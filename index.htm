@@ -32,25 +32,38 @@
     "(~(((y * y) * (-x)) - ((x / y) % (~x)))) % param1",
     "((~(-(param1 * x - y))) % (((~y) - (x - param2)) | (~(y & x)))) % param3",
     "(~(((param1 - x) ^ (x & y)) & ((~param2) * (y ^ x)))) % param3",
-    "(~(((param1 - x) ^ (x & y)) & ((~x) * (y ^ x) * param2))) % param3"
+    "(~(((param1 - x) ^ (x & y)) & ((~x) * (y ^ x) * param2))) % param3",
+    "((((x ^ x) % (-x)) / ((x + x) / (param1 ^ x))) + (((y ^ y) / (~y)) - (-(y % param2)))) % param3",
+    "(((~(x & y)) + ((~y) & (y | param1))) & (((~x) + (x & y)) - ((x / param2) | (x * y)))) % param3",
+    "((((y ^ y) + (param1 % y)) + ((~y) | (-x))) % (((x | x) - (param2 % y)) | ((-x) + (y + x)))) % param3",
+    "((-(-(-x))) ^ (~((y & x) % (y * y)))) % param1",
+    "(((~(param1 + x)) + ((x + x) + (y / param2))) | (((-y) % (x ^ y)) + ((~x) * (-y)))) % param3",
+    "((((x * param1) | (y * x)) / ((y * y) % (-x))) | (((y % param2) & (y * x)) / ((y / x) & (7 - x)))) % param3",
+    "((-((y & x) | (-x))) & (((~y) / (param1 ^ y)) ^ ((-x) & (y / y)))) % param2",
+    "((((x * y) + (-x)) / ((-x) ^ (~y))) | ((-(param1 ^ x)) % ((param2 - x) & (x / y)))) % param3",
+    "((((~y) * (y * x)) ^ ((param1 - x) + (param2 + y))) ^ (((x * y) / (x | y)) % ((y | x) * (-x)))) % param3",
+    "(-((~(y % x)) | ((x * param1) & (x + param2)))) % param3",
+    "((~((x * y) - (~x))) & (((-x) ^ (x * param1)) & ((param2 ^ x) ^ (y ^ 7)))) % param3",
+    "((~((x - param1) % (-y))) & (((x ^ y) + (~x)) ^ ((param2 + x) | (~y)))) % param3",
+    "(~(-((y / param1) - (x % param2)))) % param3",
+    "(-(((x - y ^ param1) & (~y * param2)) % (-(x * y)))) % param3"
         ];
 
     </script>
 
-
     <div class="sidebar">
         <div class="title">Pattern Controls</div>
         <div class="control-group">
-            <label for="param1">Parameter 1 (1-50):</label>
-            <input type="range" id="param1" min="1" max="50" value="11">
+            <label for="param1">param1 (1-99):</label>
+            <input type="range" id="param1" min="1" max="99" value="11">
         </div>
         <div class="control-group">
-            <label for="param2">Parameter 2 (1-100):</label>
-            <input type="range" id="param2" min="1" max="100" value="15">
+            <label for="param2">param2 (1-99):</label>
+            <input type="range" id="param2" min="1" max="99" value="15">
         </div>
         <div class="control-group">
-            <label for="param3">Parameter 3 (1-50):</label>
-            <input type="range" id="param3" min="1" max="50" value="3">
+            <label for="param3">param3 (1-99):</label>
+            <input type="range" id="param3" min="1" max="99" value="3">
         </div>
         <div class="control-group">
             <label for="invert">Invert:</label>
@@ -66,7 +79,8 @@
     const part3 = bitwiseNot(bitwiseXor(y, param3) + bitwiseNot(y));
     
     return bitwiseAnd(part1 - part2, part3) % param1;
-}</textarea>
+}
+            </textarea>
         </div>
         <div class="button-group">
             <button id="update-btn">Update Pattern</button>
@@ -77,11 +91,34 @@
         <div class="button-group">
             <button id="rndfn-btn">Random function f()</button>
         </div>
+
     </div>
+
     <div class="main-content">
-        <h1>Binary Pattern Generator ver. 0.5</h1>
         <canvas id="canvas" width="768" height="768"></canvas>
     </div>
+
+    <div class="sidebar">
+        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator ver. 0.5</h2></a>
+        <p>
+            by <a href="https://masayume.it">masayume</a>
+        </p>
+        <p>
+            From  <a href="https://freeradical.zone/@bitartbot">bitartbot</a>, a bot which produces procedural art 
+            by plotting an integer function taking the current coordinates and producing an integer result. 
+            The function is procedurally created using random numbers and appears in the status text.
+        </p>
+        <p>
+            Coordinates are coloured either by where the value appears within the range of results 
+            (the "gradient" scheme) or simply by whether it is the most common result (white) or not (black) 
+            (the "onebit" scheme.)
+        </p>
+        <p>
+            The code does not resort to evaluating a string.
+        </p>
+        </p>
+
+    </div>    
 
     <script>
         function bitwiseOr(a, b)  { return a | b; }
@@ -111,6 +148,14 @@
         const rnfFnBtn = document.getElementById('rndfn-btn');
 
         let updateTimeout = null;
+
+        function resetParam3Randomly(param) {
+            const param3Input = document.getElementById(param);
+            const minValue = parseInt(param3Input.min);
+            const maxValue = parseInt(param3Input.max);
+            const randomValue = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+            param3Input.value = randomValue;
+        }
 
         function updatePattern() {
             if (updateTimeout) {
@@ -236,6 +281,10 @@ return `;
             const randomIndex = Math.floor(Math.random() * functions.length);
             const textarea = document.getElementById('function-code');
             textarea.value = functionPrefix + functions[randomIndex] + functionPostfix;
+
+            resetParam3Randomly('param1');
+            resetParam3Randomly('param2');
+            resetParam3Randomly('param3');
 
             updatePattern();
         }
