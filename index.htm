@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Binary Pattern Generator v0.5</title>
+    <title>Binary Pattern Generator v0.6</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -50,7 +50,16 @@
     "((((13 + y) + (param1 % x)) * ((y - x) - (param2 / x))) + ((-(-x)) / ((y + x) - (-x)))) % param3",
     "(~(((y * y) | (param1 - x)) * ((param3 % x) | (x ^ param2)))) % 7",
     "(-(((x | y) + (x % y)) - ((param1 & y) | (y * y)))) % param2",
-    "((~((y * param1) % (x + y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3"
+    "((~((y * param1) % (x + y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3",
+    "(~((-(y * x)) | ((y / x) - (y % param1)))) % param2",
+    "((-(~(y | x))) | (((param1 & y) / (x / param2)) | ((-y) & (x ^ 7)))) % param3",
+    "(~(-((y % x) % (x * param1)))) % param2",
+    "((((-x) % (-y)) * ((x - y) / (y * x))) | (-(~(x + param1)))) % param2",
+    "((((param1 - y) | (y | x)) & (~(y | y))) - (((x - 17) | (x % x)) + (~(x ^ param2)))) % param3",
+    "(((~(-y)) | ((y / y) % (-y))) - (((param1 ^ x) & (y * param2)) * (-(~y)))) % param3",
+    "((((param1 | y) & (-x)) % (~(param2 & x))) & (~((y + 6) - (~x)))) % param3",
+    "((~((x * param1) % (x ^ y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3",
+    "(((-(y % param1)) | ((y ^ x) + (~y))) | (((-y) + (-y)) ^ ((-x) * (x * y)))) % param2"
         ];
 
     </script>
@@ -75,7 +84,7 @@
         </div>
         <div class="control-group">
             <label for="function-code">Pattern Function:</label>
-            <textarea id="function-code">function f(x, y, param1, param2, param3) {
+            <textarea id="function-code" rows="15" >function f(x, y, param1, param2, param3) {
     if (x === 0) return 0;
     
     const part1 = bitwiseAnd(x, x) % (y - param1);
@@ -94,6 +103,7 @@
         <br />
         <div class="button-group">
             <button id="rndfn-btn">Random function f()</button>
+            <button id="rndfn-val">Randomize values</button>
         </div>
 
     </div>
@@ -103,7 +113,7 @@
     </div>
 
     <div class="sidebar">
-        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator ver. 0.5</h2></a>
+        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator ver. 0.6</h2></a>
         <p>
             by <a href="https://masayume.it">masayume</a>
         </p>
@@ -150,6 +160,7 @@
         const saveBtn = document.getElementById('save-btn');
         const save4xBtn = document.getElementById('save4x-btn');
         const rnfFnBtn = document.getElementById('rndfn-btn');
+        const rnfVlBtn = document.getElementById('rndfn-val');
 
         let updateTimeout = null;
 
@@ -286,6 +297,10 @@ return `;
             const textarea = document.getElementById('function-code');
             textarea.value = functionPrefix + functions[randomIndex] + functionPostfix;
 
+            randomizeValues();
+        }
+
+        function randomizeValues() {
             resetParam3Randomly('param1');
             resetParam3Randomly('param2');
             resetParam3Randomly('param3');
@@ -301,6 +316,7 @@ return `;
         saveBtn.addEventListener('click', saveImage);
         save4xBtn.addEventListener('click', saveImage4X);
         rnfFnBtn.addEventListener('click', selectRandomFunction);
+        rnfVlBtn.addEventListener('click', randomizeValues);
 
         updatePattern();
     </script>
