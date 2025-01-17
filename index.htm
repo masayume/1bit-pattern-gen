@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Binary Pattern Generator v0.7</title>
+    <title>Binary Pattern Generator v0.8</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -59,7 +59,32 @@
     "(((~(-y)) | ((y / y) % (-y))) - (((param1 ^ x) & (y * param2)) * (-(~y)))) % param3",
     "((((param1 | y) & (-x)) % (~(param2 & x))) & (~((y + 6) - (~x)))) % param3",
     "((~((x * param1) % (x ^ y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3",
-    "(((-(y % param1)) | ((y ^ x) + (~y))) | (((-y) + (-y)) ^ ((-x) * (x * y)))) % param2"
+    "(((-(y % param1)) | ((y ^ x) + (~y))) | (((-y) + (-y)) ^ ((-x) * (x * y)))) % param2",
+    "(-(((-x) % (x / param1)) ^ ((param2 & x) / (-y)))) % param3",
+    "((((x + 3) ^ (param1 - x)) ^ ((~y) ^ (y % y))) & (((y & param2) / (~x)) * ((~y) | (y / x)))) % param3",
+    "((((y - x) & (x * x)) + ((-y) ^ (x % param1))) * ((-(13 + x)) - ((x * param2) ^ (7 - y)))) % param3",
+    "((((param1 % x) | (~y)) + ((y % y) | (-y))) & ((-(param2 / y)) | (~(~x)))) % param3",
+    "((~((~y) % (~x))) & (((y / y) - (y / param1)) ^ ((x & y) * (param2 & x)))) % param3",
+    "(-(~((y - param1) % (-x)))) % param2",
+    "((-((~x) / (x ^ param1))) + (-((y / param2) % (~y)))) % param3",
+    "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3",
+    "((-((-param1 - x) ^ (y | y))) % (-(-(x % y)))) % param2",
+    "(~(((x * param1) / (-y)) | ((param2 - y) - (x / y)))) % param3",
+    "(~(((~x) ^ (y + x)) % (~(~x - param1)))) % param2",
+    "((~((y % x) | (x % x))) / (((y % x) & (param1 & x)) * (~(y ^ param2)))) % param3",
+    "(((x - y) | ((param1 + y) - (~x))) * (((param2 % x) / (-y)) | ((~y) - (y - x)))) % param3",
+    "((-((~x) / (x ^ param1))) + (-((y / x) % (~y)))) % param2",
+    "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3",
+    "(((~(y ^ x)) / ((param1 ^ y) % (~y))) / ((~(11 - x)) / ((param2 * x) - (y * param3)))) % param3",
+    "(((~(-x)) * ((param1 & x) & (y ^ x))) & ((~(-y)) * ((-x) & (param2 & y)))) % (param3 * 2 + 1)",
+    "(((-(y & y)) ^ ((param1 / x) * (-x))) | (((~x) | (y + param2)) * (~(y ^ x)))) % param3",
+    "(((~x) - (param1 & y)) / (~(param1 % x))) % (((-y) | (y + y)) & (-(y - param2)))",
+    "((((y + param1) & (param2 ^ x)) / ((y & x) ^ (y ^ 8))) - ((~(~y)) & (-(param3 % x)))) % 5",
+    "((((x ^ x) | (y - param1)) + ((x / y) / (-y))) ^ (-((x - param2) * (-y)))) % param3",
+    "((-(-(x | param1))) * (~(-(param2 ^ y)))) % param3",
+    "((((x - param1) + (y / y)) % (~(y - x))) & (-((y - param1) % (param2 * y)))) % param3",
+    "((~(~(~x))) ^ ((-(x % param1)) ^ ((1 / y) / (param2 % y)))) % param3"
+
         ];
 
     </script>
@@ -75,8 +100,8 @@
             <input type="range" id="param2" min="1" max="99" value="15">
         </div>
         <div class="control-group">
-            <label for="param3">param3 (1-99):</label>
-            <input type="range" id="param3" min="1" max="99" value="3">
+            <label for="param3">param3 (2-99):</label>
+            <input type="range" id="param3" min="2" max="99" value="3">
         </div>
         <div class="control-group">
             <label for="modfun">function modifier (1-3):</label>
@@ -102,8 +127,9 @@
         </div>
         <br />
         <div class="button-group">
-            <button id="rndfn-btn">Random function f()</button>
-            <button id="rndfn-val">Randomize values</button>
+            <button id="rndfn-btn">random function</button>
+            <button id="rndfn-val">random values</button>
+            <button id="rndfn-val">random colors</button>
         </div>
 
     </div>
@@ -113,10 +139,13 @@
     </div>
 
     <div class="sidebar">
-        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator ver. 0.7</h2></a>
-        <p>
-            by <a href="https://masayume.it">masayume</a>
+        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator</h2></a>
+        <p id="par1">
+            by <a href="https://masayume.it">masayume</a>, ver. <b>0.8</b>, functions: 
         </p>
+        <script>
+            par1.textContent += functions.length;
+        </script>
         <p>
             From  <a href="https://freeradical.zone/@bitartbot">bitartbot</a>, a bot which produces procedural art 
             by plotting an integer function taking the current coordinates and producing an integer result. 
@@ -135,11 +164,6 @@
     </div>    
 
     <script>
-        function bitwiseOr(a, b)  { return a | b; }
-        function bitwiseAnd(a, b) { return a & b; }
-        function bitwiseXor(a, b) { return a ^ b; }
-        function bitwiseNot(n)    { return ~n; }
-
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const scale = 3;
@@ -294,18 +318,23 @@
 
         }
 
-        const functionPrefix = `function f(x, y, param1, param2, param3) {
+        const functionPrefix = `  function f(x, y, param1, param2, param3) {
 if (x === 0) return 0;
         
 return `;
 
         const functionPostfix = `
+
 }
         `;
         function selectRandomFunction() {
             const randomIndex = Math.floor(Math.random() * functions.length);
             const textarea = document.getElementById('function-code');
+
             textarea.value = functionPrefix + functions[randomIndex] + functionPostfix;
+
+//          EXPERIMENTAL
+//          textarea.value = functionPrefix + generateRandomExpression('param1', 'param2', 'param3') + functionPostfix;
 
             randomizeValues();
         }
@@ -317,6 +346,103 @@ return `;
 
             updatePattern();
         }
+
+        /**
+         * Generates an array of colors representing a quantized gradient between two colors
+         * @param {string} startColor - Starting color in hex format (e.g. '#ff0000')
+         * @param {string} endColor - Ending color in hex format (e.g. '#0000ff')
+         * @param {number} steps - Number of colors to generate in the gradient
+         * @returns {string[]} Array of hex color strings
+         */
+        function generateQuantizedGradient(startColor, endColor, steps) {
+          // Convert hex to RGB
+          const hexToRgb = (hex) => {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+            } : null;
+          };
+
+          // Convert RGB to hex
+          const rgbToHex = (r, g, b) => {
+            const componentToHex = (c) => {
+              const hex = Math.round(c).toString(16);
+              return hex.length === 1 ? '0' + hex : hex;
+            };
+            return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+          };
+
+          const start = hexToRgb(startColor);
+          const end = hexToRgb(endColor);
+
+          if (!start || !end) {
+            throw new Error('Invalid hex color format');
+          }
+
+          const gradient = [];
+
+          // Calculate step size for each color component
+          const stepR = (end.r - start.r) / (steps - 1);
+          const stepG = (end.g - start.g) / (steps - 1);
+          const stepB = (end.b - start.b) / (steps - 1);
+
+          // Generate colors
+          for (let i = 0; i < steps; i++) {
+            const r = start.r + (stepR * i);
+            const g = start.g + (stepG * i);
+            const b = start.b + (stepB * i);
+            gradient.push(rgbToHex(r, g, b));
+          }
+
+          return gradient;
+        }
+
+        function generateRandomExpression(params) {
+          const operators = ['+', '-', '*', '/', '%', '&', '|', '^', '~'];
+          const operands = ['x', 'y'];
+
+          function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+          }
+
+          function generateSubExpression() {
+            const operand1 = getRandomElement(operands);
+            const operator = getRandomElement(operators);
+            const operand2 = Math.random() < 0.5 ? getRandomElement(operands) : 
+                              Math.random() < 0.5 ? getRandomElement(params) : 
+                              Math.random() < 0.5 ? `(${generateSubExpression()})` : 
+                              Math.floor(Math.random() * 10); 
+
+            return `(${operand1} ${operator} ${operand2})`;
+          }
+
+          let expression = generateSubExpression();
+
+          // Add more layers of complexity
+          for (let i = 0; i < Math.floor(Math.random() * 3); i++) {
+            const newOperator = getRandomElement(operators);
+            const newOperand = Math.random() < 0.5 ? generateSubExpression() : 
+                              Math.random() < 0.5 ? getRandomElement(params) : 
+                              Math.random() < 0.5 ? `(${generateSubExpression()})` : 
+                              Math.floor(Math.random() * 10); 
+            expression = `(${expression} ${newOperator} ${newOperand})`;
+          }
+
+          return expression + ` % ${getRandomElement(params)}`; 
+        }
+
+        /*
+        // Example usage:
+        const blueToRed = generateQuantizedGradient('#0000ff', '#ff0000', 5);
+        console.log(blueToRed);
+        // Output: ['#0000ff', '#3f00bf', '#7f007f', '#bf003f', '#ff0000']
+
+        const greenToYellow = generateQuantizedGradient('#00ff00', '#ffff00', 3);
+        console.log(greenToYellow);
+        // Output: ['#00ff00', '#7fff00', '#ffff00']
+        */
 
         param1Input.addEventListener('input', updatePattern);
         param2Input.addEventListener('input', updatePattern);
