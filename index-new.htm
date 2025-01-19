@@ -67,7 +67,24 @@
     "((~((~y) % (~x))) & (((y / y) - (y / param1)) ^ ((x & y) * (param2 & x)))) % param3",
     "(-(~((y - param1) % (-x)))) % param2",
     "((-((~x) / (x ^ param1))) + (-((y / param2) % (~y)))) % param3",
-    "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3"
+    "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3",
+    "((-((-param1 - x) ^ (y | y))) % (-(-(x % y)))) % param2",
+    "(~(((x * param1) / (-y)) | ((param2 - y) - (x / y)))) % param3",
+    "(~(((~x) ^ (y + x)) % (~(~x - param1)))) % param2",
+    "((~((y % x) | (x % x))) / (((y % x) & (param1 & x)) * (~(y ^ param2)))) % param3",
+    "(((x - y) | ((param1 + y) - (~x))) * (((param2 % x) / (-y)) | ((~y) - (y - x)))) % param3",
+    "((-((~x) / (x ^ param1))) + (-((y / x) % (~y)))) % param2",
+    "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3",
+    "(((~(y ^ x)) / ((param1 ^ y) % (~y))) / ((~(11 - x)) / ((param2 * x) - (y * param3)))) % param3",
+    "(((~(-x)) * ((param1 & x) & (y ^ x))) & ((~(-y)) * ((-x) & (param2 & y)))) % (param3 * 2 + 1)",
+    "(((-(y & y)) ^ ((param1 / x) * (-x))) | (((~x) | (y + param2)) * (~(y ^ x)))) % param3",
+    "(((~x) - (param1 & y)) / (~(param1 % x))) % (((-y) | (y + y)) & (-(y - param2)))",
+    "((((y + param1) & (param2 ^ x)) / ((y & x) ^ (y ^ 8))) - ((~(~y)) & (-(param3 % x)))) % 5",
+    "((((x ^ x) | (y - param1)) + ((x / y) / (-y))) ^ (-((x - param2) * (-y)))) % param3",
+    "((-(-(x | param1))) * (~(-(param2 ^ y)))) % param3",
+    "((((x - param1) + (y / y)) % (~(y - x))) & (-((y - param1) % (param2 * y)))) % param3",
+    "((~(~(~x))) ^ ((-(x % param1)) ^ ((1 / y) / (param2 % y)))) % param3"
+
         ];
 
     </script>
@@ -313,7 +330,11 @@ return `;
         function selectRandomFunction() {
             const randomIndex = Math.floor(Math.random() * functions.length);
             const textarea = document.getElementById('function-code');
+
             textarea.value = functionPrefix + functions[randomIndex] + functionPostfix;
+
+//          EXPERIMENTAL
+//          textarea.value = functionPrefix + generateRandomExpression('param1', 'param2', 'param3') + functionPostfix;
 
             randomizeValues();
         }
@@ -376,6 +397,40 @@ return `;
           }
 
           return gradient;
+        }
+
+        function generateRandomExpression(params) {
+          const operators = ['+', '-', '*', '/', '%', '&', '|', '^', '~'];
+          const operands = ['x', 'y'];
+
+          function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+          }
+
+          function generateSubExpression() {
+            const operand1 = getRandomElement(operands);
+            const operator = getRandomElement(operators);
+            const operand2 = Math.random() < 0.5 ? getRandomElement(operands) : 
+                              Math.random() < 0.5 ? getRandomElement(params) : 
+                              Math.random() < 0.5 ? `(${generateSubExpression()})` : 
+                              Math.floor(Math.random() * 10); 
+
+            return `(${operand1} ${operator} ${operand2})`;
+          }
+
+          let expression = generateSubExpression();
+
+          // Add more layers of complexity
+          for (let i = 0; i < Math.floor(Math.random() * 3); i++) {
+            const newOperator = getRandomElement(operators);
+            const newOperand = Math.random() < 0.5 ? generateSubExpression() : 
+                              Math.random() < 0.5 ? getRandomElement(params) : 
+                              Math.random() < 0.5 ? `(${generateSubExpression()})` : 
+                              Math.floor(Math.random() * 10); 
+            expression = `(${expression} ${newOperator} ${newOperand})`;
+          }
+
+          return expression + ` % ${getRandomElement(params)}`; 
         }
 
         /*
