@@ -83,8 +83,32 @@
     "((((x ^ x) | (y - param1)) + ((x / y) / (-y))) ^ (-((x - param2) * (-y)))) % param3",
     "((-(-(x | param1))) * (~(-(param2 ^ y)))) % param3",
     "((((x - param1) + (y / y)) % (~(y - x))) & (-((y - param1) % (param2 * y)))) % param3",
-    "((~(~(~x))) ^ ((-(x % param1)) ^ ((1 / y) / (param2 % y)))) % param3"
-
+    "((~(~(~x))) ^ ((-(x % param1)) ^ ((1 / y) / (param2 % y)))) % param3",
+    "(((-(param1 + y)) & (-(-x))) - (((-x) + (y | x)) * (~(x + param2)))) % param3",
+    "((((param1 & x) - (y / param2)) / ((x & x) % (x | 17))) | (~((10 - y) - (y & x)))) % param3",
+    "((((~y) * (~x)) / (~(y + x))) + ((~(y ^ param1)) - ((~y) & (~y)))) % param2",
+    "((((y + x) - (x + param1)) * (~(~y))) + (((-y) & (y % x)) * ((x & param2) ^ (x & x)))) % param3",
+    "(((y & param1) + (x + x)) * ((y | x) * (x & x))) & (((param2 ^ y) * (x % param3)) % ((x + x) | (y / x)))",
+    "(~(((param1 - y) % (-x)) | ((y / x) / (~y)))) % param2",
+    "(~(((param1 - y) % (-x)) | ((y / x) / (~y)))) % param2",
+    "(-((~(param1 / x)) % ((y ^ x) / (-x)))) % param2",
+    "((~((~y) / (x ^ y))) % ((~(x ^ x)) * ((y + param2) | (~y)))) % param3",
+    "(~(((y ^ param1) / (y / x)) - (-(-y)))) % param2",
+    "((((param1 & y) * (param2 + y)) & ((x + x) ^ (x - 9))) + (~((x - 3) / (-y)))) % param3",
+    "(((~(18 - y)) + ((y % param1) + (x ^ x))) + ((~(y % param2)) | ((x - y) * (x / y)))) % param3",
+    "~(~((-y * param1) ^ (-x * param2))) % param3",
+    "((((-y) * (x + param1)) ^ ((y / param2) ^ (~y))) - (-(~(-y)))) % param3",
+    "(((~(y | param1)) * (~(1 & y))) & (((y * x) * (param1 * y)) + ((~y) ^ (x * param2)))) % 3",
+    "((((y & param1) - (x - x)) - (~(x & param2))) ^ ((~(x * 2)) / ((3 - y) % (x + y)))) % param3", 
+    "((-(-(y % y))) + (-((~y) % (param1 - x)))) % param2", 
+    "((((y % x) ^ (param1 | x)) - ((y ^ param2) % (x % y))) / (-(-(-y)))) % param3", 
+    "((((param1 + y) | (-y)) % ((x % param2) % (y - x))) - ((~(y * param3)) | (-(x + y)))) % param3", 
+    "(((~(x + y)) + ((-x) / (param1 | x))) / (((x % y) + (x ^ y)) ^ ((param2 - x) - (x + x)))) % param3", 
+    "(~((-(param1 | y)) | ((param2 ^ x) % (x + x)))) % param3",
+    "((((y ^ x) % (param1 ^ y)) - ((y | y) * (y % x))) & ((-(y - x)) & ((y - param2) ^ (y + x)))) % param3", 
+    "((((~y) / (param1 ^ x)) + ((y * param2) ^ (x + y))) + (~((x + y) - (-x)))) % 3", 
+    "((((x / y) * (~y)) % ((~x) - (param1 / x))) ^ (((y % y) | (y | param2)) ^ (~(~y)))) % param3"
+    
         ];
 
     </script>
@@ -92,12 +116,12 @@
     <div class="sidebar">
         <div class="title">Pattern Controls</div>
         <div class="control-group">
-            <label for="param1">param1 (1-99):</label>
-            <input type="range" id="param1" min="1" max="99" value="11">
+            <label for="param1">param1 (-99 - 99):</label>
+            <input type="range" id="param1" min="-99" max="99" value="11">
         </div>
         <div class="control-group">
-            <label for="param2">param2 (1-99):</label>
-            <input type="range" id="param2" min="1" max="99" value="15">
+            <label for="param2">param2 (-99 - 99):</label>
+            <input type="range" id="param2" min="-99" max="99" value="15">
         </div>
         <div class="control-group">
             <label for="param3">param3 (2-99):</label>
