@@ -51,7 +51,7 @@ textarea {
     color: #ecf0f1;
     border: 1px solid #7f8c8d;
 }
-button {
+.abutton {
     background: #3498db;
     color: white;
     border: none;
@@ -62,8 +62,39 @@ button {
     width: 100%;
     margin-bottom: 10px;
 }
-button:hover {
+.abutton:hover {
     background: #2980b9;
+}
+
+.glass-button {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.8), rgba(0, 123, 255, 0.4)); /* Gradient for depth */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Light border for glass edge */
+    border-radius: 8px; /* Round edges */
+    color: white;
+    padding: 8px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(10px); /* Glass effect */
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.2), /* Outer shadow */
+        inset 0 2px 4px rgba(255, 255, 255, 0.3), /* Inner highlight */
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Text shadow for better contrast */
+}
+.glass-button:hover {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.9), rgba(0, 123, 255, 0.5)); /* Darker gradient on hover */
+    box-shadow: 
+        0 6px 8px rgba(0, 0, 0, 0.3), /* Deeper shadow on hover */
+        inset 0 2px 4px rgba(255, 255, 255, 0.4), /* Brighter inner highlight */
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3); /* Deeper inner shadow */
+}
+.glass-button:active {
+    transform: scale(0.98); /* Slight shrink when clicked */
+    box-shadow: 
+        0 3px 5px rgba(0, 0, 0, 0.2), /* Reduced shadow on click */
+        inset 0 2px 4px rgba(255, 255, 255, 0.3), /* Adjusted inner highlight */
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
 }
 .title {
     font-size: 20px;
