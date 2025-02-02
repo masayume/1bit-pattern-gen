@@ -32,7 +32,7 @@
     "(~(((y * y) * (-x)) - ((x / y) % (~x)))) % param1  // 22",
     "((~(-(Math.abs(param1) * x - y))) % (((~y) - (x - param2)) | (~(y & x)))) % param3  // 23",
     "(~(((param1 - x) ^ (x & y)) & ((~param2) * (y ^ x)))) % param3  // 24",
-    "(~(((param1 - x) ^ (x & y)) & ((~x) * (y ^ x) * Math.abs(param2))) % param3  // 25",
+    "(~(((param1 - x) ^ (x & y)) & ((~x) * (y ^ x) * Math.abs(param2)))) % param3  // 25",
     "((((x ^ x) % (-x)) / ((x + x) / (param1 ^ x))) + (((y ^ y) / (~y)) - (-(y % param2)))) % param3  // 26",
     "(((~(x & y)) + ((~y) & (y | param1))) & (((~x) + (x & y)) - ((x / param2) | (x * y)))) % param3  // 27",
     "((((y ^ y) + (param1 % y)) + ((~y) | (-x))) % (((x | x) - (param2 % y)) | ((-x) + (y + x)))) % param3  // 28",
@@ -43,7 +43,7 @@
     "((((x * y) + (-x)) / ((-x) ^ (~y))) | ((-(param1 ^ x)) % ((param2 - x) & (x / y)))) % param3  // 33",
     "((((~y) * (y * x)) ^ ((param1 - x) + (param2 + y))) ^ (((x * y) / (x | y)) % ((y | x) * (-x)))) % param3  // 34",
     "(-((~(y % x)) | ((x * param1) & (x + param2)))) % param3  // 35",
-    "((~((x * y) - (~x))) & (((-x) ^ (x * param1)) & ((param2 ^ x) ^ (y ^ 7)))) % param3  // 36",
+    "((~((x * y) - (~x))) & (((-x) ^ (x * (2 * param1 + 1))) & ((param2 ^ x) ^ (y ^ 7)))) % param3  // 36",
     "((~((x - param1) % (-y))) & (((x ^ y) + (~x)) ^ ((param2 + x) | (~y)))) % param3  // 37",
     "(~(-((y / param1) - (x % param2)))) % param3  // 38",
     "(-(((x - y ^ param1) & (~y * Math.abs(param2)) % (-(x * y)))) % param3  // 39",
@@ -71,7 +71,7 @@
     "((-((-param1 - x) ^ (y | y))) % (-(-(x % y)))) % param2  // 61",
     "(~(((x * param1) / (-y)) | ((param2 - y) - (x / y)))) % param3  // 62",
     "(~(((~x) ^ (y + x)) % (~(~x - param1)))) % param2  // 63",
-    "((~((y % x) | (x % x))) / (((y % x) & (param1 & x)) * (~(y ^ param2)))) % param3  // 64",
+    "((~((y % x) | (x % x))) / (((y % x) & (param1 & x)) * (~(y ^ Math.abs(param2)))) % param3  // 64",
     "(((x - y) | ((param1 + y) - (~x))) * (((param2 % x) / (-y)) | ((~y) - (y - x)))) % param3  // 65",
     "((-((~x) / (x ^ param1))) + (-((y / x) % (~y)))) % param2  // 66",
     "((~((~x) + (y | param1))) * (((param2 / x) - (-x)) - ((8 - y) / (x * y)))) % param3  // 67",
@@ -136,7 +136,31 @@
     "(-(-((-Math.abs(param1) | y) ^ (~x)))) % param2 // 127", 
     "((-(-(x / y))) - ((~(x & param1)) ^ ((x | x) & (param2 + x)))) % param3 // 128",
     "((((2 + y) & (y | y)) + ((y ^ y) / (-x))) / (((param1 - y) | (-y)) - ((x & param2) - (x + x)))) % param3 // 129",
-    "((-((~y) & (-x))) - ((-(y % param1)) + (~(param2 | x)))) % param3 // 130"
+    "((-((~y) & (-x))) - ((-(y % param1)) + (~(param2 | x)))) % param3 // 130",
+    "((((x ^ param1) + (10 % y)) * ((x - 20) / (x | param2))) * (~((-x) - (~y)))) % param3 // 131", 
+    "((-((~y * Math.abs(param1)) - (x + y))) / (((-y) * (~x | param2)) & (~(~y)))) % param3  // 132", 
+    "((~((x / Math.abs(param1)) | (param2 ^ x))) * (((y * y) * (~x)) - (~(y | 23)))) % param3 // 133", 
+    "(~((-(param1 + x)) & ((-y) / (x + param2)))) % param3   // 134", 
+    "((((-y) - (param1 ^ y)) % ((~x) % (~y))) + (-(-(x ^ Math.abs(param2))))) % param3  // 135", 
+    "(~(((y | x) & (x % 3)) ^ ((y * Math.abs(param2)) / (-x + param1)))) % param3  // 136", 
+    "((~((y ^ param1) + (~x))) ^ (((y / x) * (param2 ^ x)) ^ ((x + 18) + (16 | y)))) % param3  // 137",
+    "((~((x * y) - (~x))) & (((-x) ^ (x * (2 * param1 + 1))) & ((param2 ^ x) ^ (y ^ 7)))) % ( 2 * param3 + 1 )  // 138",
+    "((((param1 & y) / (y & y)) ^ ((-x) * (~x))) + ((-(y / x)) + ((y * 7) ^ (y * param2)))) % param3 // 139", 
+    "((((x * x) ^ (-x)) % (-(param1 - y))) | ((-(x - y)) ^ ((-x) | (param2 / y)))) % param3  // 140",
+    "((~((y & x) + (param1 + y))) ^ (~((param2 + x) & (~y)))) % param3  // 141",
+    "((~((~x) & (param1 ^ x))) * (((-Math.abs(param2) ^ y) + (~x)) - (~(x + x)))) % param3  // 142",
+    "((~(-(7 ^ x))) + ((-(param1 * x)) / ((y % param2) % (19 - y)))) % param3  // 143",
+    "((((~x) - (param1 / x)) & ((x % y) + (param2 & y))) + (((~x) / (y | y)) & ((y / param3) & (x * 11))))   // 144",
+    "(~(((y | param1) % x) + ((y * -Math.abs(param2)) * (y * x)))) % param3    // 145",
+    "(~(((x + y) * (~y / Math.abs(param1))) ^ ((y | y) & (x / param2)))) % param3  // 146",
+    "(-(((-y) ^ (Math.abs(param1) | x)) % ((-x * param2) | (~x)))) % param3  // 147",
+    "((((Math.abs(param1) | x) | (x & (y - param2))) % (-(y + x))) & (((-x) / (~y)) / ((~y) ^ (1 * y)))) % param3  // 148",
+    "(((~(param1 + y)) & ((x | y) | (~y))) + (((~x) & (~y)) / ((-x) % (param2 & x)))) % param3  // 149", 
+    "((((y - x) / (-x)) | (-(y + y))) + (((14 & x) - (y & y)) ^ ((y ^ param1) + (param2 ^ x)))) % param3  // 150",
+    "(~(((y * param1) & (x ^ 18)) | ((-Math.abs(param2) * y) % (param2 ^ x)))) % param3 // 151",
+    "((((y | 17) / (x + param1)) & (-(x ^ y))) / (((param2 - x) | (y % x)) / ((~y) + (x ^ y)))) % param3  // 152",
+    "((~(-(y % param1))) | (((param2 - x) - (y % param1)) & ((y ^ x) % (15 - y)))) % (param3 / 10)  // 153",
+    "((~(-(y % param1))) | (((param2 - x) - (y % param1)) & ((y ^ x) % (15 - y)))) % parseInt(param3 / 10)  // 154"
         ];
 
     </script>
@@ -170,14 +194,14 @@
         </div>
 
         <div class="button-group" style="width: 102%; ">
-            <button id="invert-btn">invert</button>
-            <button id="rndfn-col">random colors</button>
+            <button id="invert-btn" class="glass-button">invert</button>
+            <button id="rndfn-col" class="glass-button">random colors</button>
         </div>
         <br />
         <div class="button-group" style="width: 100%; ">
-            <button id="rndfn-btn" ><b>random function</b></button>
-            <button id="rndfn-val" ><b>random values</b></button>
-            <button id="update-btn">Update</button>
+            <button id="rndfn-btn" class="glass-button"><b>random function</b></button>
+            <button id="rndfn-val" class="glass-button"><b>random values</b></button>
+            <button id="update-btn" class="glass-button">Update</button>
         </div>
 
     </div>
@@ -209,8 +233,8 @@
         </p>
         </p>
         <div class="button-group">
-            <button id="save-btn"><b>Save Image</b></button>
-            <button id="save4x-btn"><b>Save 4X</b></button>
+            <button id="save-btn" class="glass-button"><b>Save Image</b></button>
+            <button id="save4x-btn" class="glass-button"><b>Save 4X</b></button>
         </div>
 
     </div>    
