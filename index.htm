@@ -90,7 +90,7 @@
         const ctx = canvas.getContext('2d');
         const scale = 3;
         const baseSize = 256;
-        let invert = 0;
+        let   invert = 0;
         
         const bufferCanvas = document.createElement('canvas');
         bufferCanvas.width = baseSize;
@@ -121,12 +121,12 @@
         }
 
         function invertVal() {
-
-            if (parseInt(invertVal.value) == 1) {
+            if ((invert) == 1) {
                 invert = 0
             } else {
                 invert = 1
             } 
+            updatePattern();
         }
 
         function updatePattern() {
@@ -149,6 +149,7 @@
                         for (let x = 0; x < baseSize; x++) {
 
                             let value = 0;
+
                             // EVAL FUNCTION
                             if (modfun != 1) {
                                 value = f(x, y, param1, param2, param3) % modfun;

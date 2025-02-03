@@ -39,7 +39,7 @@ const functions = [
     "(~(-((y / param1) - (x % param2)))) % param3  // 38",
     "(-(((x - y ^ Math.abs(param1) & (~y * Math.abs(param2)) % (-(x * y)))))) % param3  // 39",
     "((((13 + y) + (param1 % x)) * ((y - x) - (param2 / x))) + ((-(-x)) / ((y + x) - (-x)))) % param3  // 40",
-    "(~(((y * y) | (param1 - x)) * ((param3 % x) | (x ^ Math.abs(param2)))) % 7  // 41",
+    "(~(((y * y) | (param1 - x)) * ((param3 % x) | (x ^ Math.abs(param2))))) % 7  // 41",
     "(-(((x | y) + (x % y)) - ((param1 & y) | (y * y)))) % param2  // 42",
     "((~((y * param1) % (x + y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3  // 43",
     "(~((-(y * x)) | ((y / x) - (y % param1)))) % param2  // 44",
