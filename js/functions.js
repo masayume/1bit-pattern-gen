@@ -151,5 +151,11 @@ const functions = [
     "(~(((y * param1) & (x ^ 18)) | ((-Math.abs(param2) * y) % (param2 ^ x)))) % param3 // 151",
     "((((y | 17) / (x + param1)) & (-(x ^ y))) / (((param2 - x) | (y % x)) / ((~y) + (x ^ y)))) % param3  // 152",
     "((~(-(y % param1))) | (((param2 - x) - (y % param1)) & ((y ^ x) % (15 - y)))) % (param3 / 10)  // 153",
-    "((~(-(y % param1))) | (((param2 - x) - (y % param1)) & ((y ^ x) % (15 - y)))) % parseInt(param3 / 10)  // 154"
+    "((~(-(y % param1))) | (((param2 - x) - (y % param1)) & ((y ^ x) % (15 - y)))) % parseInt(param3 / 10)  // 154",
+    "(((-(y + param1)) ^ ((x - param1) | (~y))) + (((~x) - (x % x)) % ((21 + x) / (y ^ param2)))) % param3 // 155", 
+    "(-(((x | Math.abs(param1)) | (x % x)) / (1 -(x | y)))) % param3 // 156", 
+    "(((~(~x)) & ((y / param1) % (x | y))) ^ (((~y) * (-x)) - ((x & (param2 * y)) / (-x)))) % (param3 / 5)  // 157", 
+    "((((y ^ y) * (x | y)) | (-(~y))) / (((x * param1) + (y % x)) & ((x ^ Math.abs(param2)) | (y + 24)))) % param3  // 158", 
+    "((((-x) & (x | x)) / ((param1 & y) ^ (param2 % y))) & ((~(y ^ x)) * ((20 | y) + (-x)))) % (param3 / 5)  // 159", 
+    "((((y & (param1 * x)) * (y * y)) & ((~x) | (y / x))) / (((x / (x * x)) ^ (-y * -Math.abs(param2))) + ((x / 4) & (~y)))) % param3  // 160"     
 ];

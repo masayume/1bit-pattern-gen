@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Binary Pattern Generator v0.95</title>
+    <title>Binary Pattern Generator v1.0</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -40,8 +40,8 @@
 
         <div class="button-group" style="width: 102%; ">
             <button id="invert-btn" class="glass-button"><i class="fa-solid fa-square"></i> &nbsp;Invert</button>
-            <button id="color-btn" class="glass-button"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
             <button id="integer-btn" class="glass-button"><i class="fa-solid fa-wave-square"></i> &nbsp;Int</button>
+            <button id="color-btn" class="glass-button"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
         </div>
         <br />
         <div class="button-group" style="width: 100%; ">
@@ -59,7 +59,7 @@
     <div class="sidebar">
         <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator</h2></a>
         <p id="par1">
-            by <a href="https://masayume.it">masayume</a>, ver. <b>0.95</b>, functions: 
+            by <a href="https://masayume.it">masayume</a>, ver. <b>1.0</b>, functions: 
         </p>
         <script>
             par1.textContent += (functions.length + 1);
@@ -91,6 +91,7 @@
         const scale = 3;
         const baseSize = 256;
         let   invert = 0;
+        let   tointeger = 0;
         
         const bufferCanvas = document.createElement('canvas');
         bufferCanvas.width = baseSize;
@@ -103,6 +104,7 @@
         const param3Input = document.getElementById('param3');
         const modfunInput = document.getElementById('modfun');
         const invertInput = document.getElementById('invert-btn');
+        const integerInput = document.getElementById('integer-btn');
         const functionCode = document.getElementById('function-code');
         const updateBtn = document.getElementById('update-btn');
         const saveBtn = document.getElementById('save-btn');
@@ -120,8 +122,17 @@
             param3Input.value = randomValue;
         }
 
+        function integerVal() {
+            if (tointeger == 1) {
+                tointeger = 0
+            } else {
+                tointeger = 1
+            } 
+            updatePattern();
+        }
+
         function invertVal() {
-            if ((invert) == 1) {
+            if (invert == 1) {
                 invert = 0
             } else {
                 invert = 1
@@ -156,6 +167,11 @@
                             } else {
                                 value = f(x, y, param1, param2, param3);                                
                             }
+
+                            if (tointeger == 1) {
+                                value = Math.round(value);
+                            }
+
 
                             if (invert) value = 1 - value;
                             const color = value * 255;
@@ -382,6 +398,7 @@ return `;
         param3Input.addEventListener('input', updatePattern);
         modfunInput.addEventListener('input', updatePattern);
         invertInput.addEventListener('click', invertVal);
+        integerInput.addEventListener('click', integerVal);
         updateBtn.addEventListener('click', updatePattern);
         saveBtn.addEventListener('click', saveImage);
         save4xBtn.addEventListener('click', saveImage4X);
