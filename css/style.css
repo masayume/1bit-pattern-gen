@@ -83,13 +83,19 @@ a, a:visited {
     text-decoration-color: whitesmoke;
 }
 
+.fa-solid {
+    font-size: 24px;
+}
+
 .glass-button {
-    background: rgba(23, 23, 255, 0.2); /* Light transparent blue */
-    border: 2px solid rgba(255, 255, 255, 0.3); /* Light border for glass edge */
+    display: flex;
+    align-items: center; /* Vertically center items */
+    background: rgba(0, 6, 200, 0.2); /* Light transparent blue */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for glass edge */
     border-radius: 8px; /* Round edges */
     color: white;
-    padding: 8px 8px;
-    font-size: 16px;
+    padding: 12px 12px;
+    font-size: 20px;
     cursor: pointer;
     backdrop-filter: blur(10px); /* Frosted glass effect */
     box-shadow: 
@@ -118,7 +124,7 @@ a, a:visited {
 }
 
 .glass-button:hover {
-    background: rgba(0, 123, 255, 0.3); /* Slightly more opaque on hover */
+    background: rgba(0, 23, 255, 0.3); /* Slightly more opaque on hover */
     box-shadow: 
         0 6px 8px rgba(0, 0, 0, 0.3), /* Deeper shadow on hover */
         inset 0 2px 4px rgba(255, 255, 255, 0.5), /* Brighter inner highlight */

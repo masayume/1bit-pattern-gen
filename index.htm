@@ -3,6 +3,7 @@
 <head>
     <title>Binary Pattern Generator v0.9</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -27,7 +28,7 @@
     "((((x + param1) ^ (x | x)) | (~(-y))) % (~(~(param2 & x)))) % param3  // 17",
     "((((~x) * (y * y)) ^ (~(~x))) & ((-(-x)) / ((y / param1) | (y - param2)))) % param3  // 18",
     "((((-x) % (-y)) & ((param1 / x) * (x - x))) | (((y - 19) ^ (y + param2)) % ((y & x) % (x ^ y)))) % param3  // 19",
-    "((-(x * y)) * (-(x % Math.abs(param1))) & (-(~(x * x)))) % (2 * param2 +1) // 20",
+    "((-(x * y * param1)) * (-(x % Math.abs(param2))) & (-(~(x * x)))) % (2 * param3 +1) // 20",
     "((((y | y) % (param1 % x)) - (-(y / param2))) + ((~(x / param3)) - ((x - y) | (x - y)))) % 4  // 21",
     "(~(((y * y) * (-x)) - ((x / y) % (~x)))) % param1  // 22",
     "((~(-(Math.abs(param1) * x - y))) % (((~y) - (x - param2)) | (~(y & x)))) % param3  // 23",
@@ -46,7 +47,7 @@
     "((~((x * y) - (~x))) & (((-x) ^ (x * (2 * param1 + 1))) & ((param2 ^ x) ^ (y ^ 7)))) % param3  // 36",
     "((~((x - param1) % (-y))) & (((x ^ y) + (~x)) ^ ((param2 + x) | (~y)))) % param3  // 37",
     "(~(-((y / param1) - (x % param2)))) % param3  // 38",
-    "(-(((x - y ^ param1) & (~y * Math.abs(param2)) % (-(x * y)))) % param3  // 39",
+    "(-(((x - y ^ Math.abs(param1) & (~y * Math.abs(param2)) % (-(x * y))))) % param3  // 39",
     "((((13 + y) + (param1 % x)) * ((y - x) - (param2 / x))) + ((-(-x)) / ((y + x) - (-x)))) % param3  // 40",
     "(~(((y * y) | (param1 - x)) * ((param3 % x) | (x ^ param2)))) % 7  // 41",
     "(-(((x | y) + (x % y)) - ((param1 & y) | (y * y)))) % param2  // 42",
@@ -57,7 +58,7 @@
     "((((-x) % (-y)) * ((x - y) / (y * x))) | (-(~(x + param1)))) % param2  // 47",
     "((((param1 - y) | (y | x)) & (~(y | y))) - (((x - 17) | (x % x)) + (~(x ^ param2)))) % param3  // 48",
     "(((~(-y)) | ((y / y) % (-y))) - (((param1 ^ x) & (y * param2)) * (-(~y)))) % param3  // 49",
-    "((((param1 | y) & (-x)) % (~(param2 & x))) & (~((y + 6) - (~x)))) % param3  // 50",
+    "((((Math.abs(param1) | y) & (-x)) % (~(param2 & x))) & (~((y + 6) - (~x)))) % param3  // 50",
     "((~((x * param1) % (x ^ y))) ^ (((1 ^ y) ^ (-y)) - (~(y / param2)))) % param3  // 51",
     "(((-(y % param1)) | ((y ^ x) + (~y))) | (((-y) + (-y)) ^ ((-x) * (x * y)))) % param2  // 52",
     "(-(((-x) % (x / param1)) ^ ((param2 & x) / (-y)))) % param3  // 53",
@@ -102,7 +103,7 @@
     "(((~(y | param1)) * (~(1 & y))) & (((y * x) * (param1 * y)) + ((~y) ^ (x * param2)))) % 3  // 92",
     "((((y & param1) - (x - x)) - (~(x & param2))) ^ ((~(x * 2)) / ((3 - y) % (x + y)))) % param3  // 93", 
     "((-(-(y % y))) + (-((~y) % (param1 - x)))) % param2  // 94", 
-    "((((y % x) ^ (param1 | x)) - ((y ^ param2) % (x % y))) / (-(-(-y)))) % param3  // 95", 
+    "((((y % x) ^ (param1 | x)) - ((y ^ Math.abs(param2) % (x % y))) / (-(-(-y)))) % param3  // 95", 
     "((((param1 + y) | (-y)) % ((x % param2) % (y - x))) - ((~(y * param3)) | (-(x + y)))) % param3  // 96", 
     "(((~(x + y)) + ((-x) / (param1 | x))) / (((x % y) + (x ^ y)) ^ ((param2 - x) - (x + x)))) % param3  // 97", 
     "(~((-(param1 | y)) | ((param2 ^ x) % (x + x)))) % param3  // 98",
@@ -194,14 +195,15 @@
         </div>
 
         <div class="button-group" style="width: 102%; ">
-            <button id="invert-btn" class="glass-button">invert</button>
-            <button id="rndfn-col" class="glass-button">random colors</button>
+            <button id="invert-btn" class="glass-button"><i class="fa-solid fa-square"></i> &nbsp;Invert</button>
+            <button id="color-btn" class="glass-button"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
+            <button id="integer-btn" class="glass-button"><i class="fa-solid fa-wave-square"></i> &nbsp;Int</button>
         </div>
         <br />
         <div class="button-group" style="width: 100%; ">
-            <button id="rndfn-btn" class="glass-button"><b>random function</b></button>
-            <button id="rndfn-val" class="glass-button"><b>random values</b></button>
-            <button id="update-btn" class="glass-button">Update</button>
+            <button id="rndfn-btn" class="glass-button"><b><i class="fa-solid fa-dice"></i> Function</b></button>
+            <button id="rndfn-val" class="glass-button"><b><i class="fa-solid fa-shuffle"></i> Values</b></button>
+            <button id="update-btn" class="glass-button"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
 
     </div>
@@ -233,8 +235,8 @@
         </p>
         </p>
         <div class="button-group">
-            <button id="save-btn" class="glass-button"><b>Save Image</b></button>
-            <button id="save4x-btn" class="glass-button"><b>Save 4X</b></button>
+            <button id="save-btn" class="glass-button"><b><i class="fa-solid fa-floppy-disk"></i> Image</b></button>
+            <button id="save4x-btn" class="glass-button"><b><i class="fa-solid fa-floppy-disk"></i> 4X</b></button>
         </div>
 
     </div>    
