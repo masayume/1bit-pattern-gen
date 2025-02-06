@@ -79,8 +79,13 @@
         </p>
         </p>
         <div class="button-group">
-            <button id="save-btn" class="glass-button"><b><i class="fa-solid fa-floppy-disk"></i> Image</b></button>
-            <button id="save4x-btn" class="glass-button"><b><i class="fa-solid fa-floppy-disk"></i> 4X</b></button>
+            <button id="save-btn" class="glass-button" title="save image"><b><i class="fa-solid fa-floppy-disk"></i> Image</b></button>
+            <button id="save4x-btn" class="glass-button" title="save mirrored image"><b><i class="fa-solid fa-floppy-disk"></i> Mirrored</b></button>
+        </div>
+        <br />
+        <div class="button-group">
+            <button id="grid-btn" class="button" title="show grid"><b><i class="fa-solid fa-border-none"></i> show grid</b></button>
+            <button id="rotate90-btn" class="glass-button" title="rotate 90° clockwise"><b><i class="fa-solid fa-rotate-left"></i> Rotate CCW</b></button>
         </div>
 
     </div>    
@@ -109,6 +114,7 @@
         const updateBtn = document.getElementById('update-btn');
         const saveBtn = document.getElementById('save-btn');
         const save4xBtn = document.getElementById('save4x-btn');
+        const rotate90Btn = document.getElementById('rotate90-btn');
         const rnfFnBtn = document.getElementById('rndfn-btn');
         const rnfVlBtn = document.getElementById('rndfn-val');
 
@@ -192,6 +198,38 @@
                     alert('Error in function code: ' + error.message);
                 }
             }, 50);
+        }
+
+        let rotationCount = 0; // Keep track of rotations
+
+        function rotate90CCW() {
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const scale = 3;
+
+            const radians = (90 * Math.PI) / 180;
+
+            const originalWidth = canvas.width / scale;
+            const originalHeight = canvas.height / scale;
+
+            const rotatedWidth = Math.abs(originalWidth * Math.cos(radians)) + Math.abs(originalHeight * Math.sin(radians));
+            const rotatedHeight = Math.abs(originalWidth * Math.sin(radians)) + Math.abs(originalHeight * Math.cos(radians));
+
+            canvas.width = rotatedWidth * scale;
+            canvas.height = rotatedHeight * scale;
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(radians * (rotationCount + 1)); // Rotate by accumulated angle
+            ctx.scale(scale, scale);
+
+            // ***THE FIX: Only clear the *newly rotated* area***
+            ctx.clearRect(-rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+
+            ctx.drawImage(bufferCanvas, -originalWidth / 2, -originalHeight / 2);
+
+            rotationCount++; // Increment rotation count
         }
 
         function flipCanvas(originalCanvas) {
@@ -402,6 +440,7 @@ return `;
         updateBtn.addEventListener('click', updatePattern);
         saveBtn.addEventListener('click', saveImage);
         save4xBtn.addEventListener('click', saveImage4X);
+        rotate90Btn.addEventListener('click', rotate90CCW);
         rnfFnBtn.addEventListener('click', selectRandomFunction);
         rnfVlBtn.addEventListener('click', randomizeValues);
 
