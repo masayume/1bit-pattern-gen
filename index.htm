@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Binary Pattern Generator v1.0</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -39,15 +40,18 @@
         </div>
 
         <div class="button-group" style="width: 102%; ">
-            <button id="invert-btn" class="glass-button"><i class="fa-solid fa-square"></i> &nbsp;Invert</button>
-            <button id="integer-btn" class="glass-button"><i class="fa-solid fa-wave-square"></i> &nbsp;Int</button>
-            <button id="color-btn" class="glass-button"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
+            <button id="invert-btn" class="glass-button" title="black/white invert"><i class="fa-solid fa-square"></i> &nbsp;Invert</button>
+            <button id="integer-btn" class="glass-button" title="proper 1-bit output"><i class="fa-solid fa-wave-square"></i> &nbsp;Int</button>
+            <button id="color-btn" class="glass-button" title="not implemented yet"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
         </div>
+
         <br />
+
         <div class="button-group" style="width: 100%; ">
-            <button id="rndfn-btn" class="glass-button"><b><i class="fa-solid fa-dice"></i> Function</b></button>
-            <button id="rndfn-val" class="glass-button"><b><i class="fa-solid fa-shuffle"></i> Values</b></button>
-            <button id="update-btn" class="glass-button"><i class="fa-solid fa-rotate-right"></i></button>
+            <button id="rndfn-btn" class="glass-button" title="plot random function"><b><i class="fa-solid fa-dice"></i> f</b></button>
+            <button id="omoshiroi-btn" class="glass-button" title="interesting functions"><i class="fa-solid fa-dice"> 楽</i></button>
+            <button id="rndfn-val" class="glass-button" title="set random param values"><b><i class="fa-solid fa-shuffle"></i> p</b></button>
+            <button id="update-btn" class="glass-button" title="update plotting"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
 
     </div>
@@ -112,11 +116,13 @@
         const integerInput = document.getElementById('integer-btn');
         const functionCode = document.getElementById('function-code');
         const updateBtn = document.getElementById('update-btn');
+        const omoshiroiBtn = document.getElementById('omoshiroi-btn');
         const saveBtn = document.getElementById('save-btn');
         const save4xBtn = document.getElementById('save4x-btn');
         const rotate90Btn = document.getElementById('rotate90-btn');
         const rnfFnBtn = document.getElementById('rndfn-btn');
         const rnfVlBtn = document.getElementById('rndfn-val');
+        const omoshiroi = 0;
 
         let updateTimeout = null;
 
@@ -146,6 +152,36 @@
             updatePattern();
         }
 
+        function selectStringsEndingWithRaku(arr) {
+          if (!Array.isArray(arr)) {
+            throw new Error("Input must be an array.");
+          }
+
+          const rakuStrings = arr.filter(str => str.endsWith('楽'));
+
+          if (rakuStrings.length === 0) {
+            return []; // Return an empty array if no strings end with '楽'
+          }
+
+          const randomIndex = Math.floor(Math.random() * rakuStrings.length);
+          return [rakuStrings[randomIndex]]; // Return an array containing the single randomly selected element
+        }
+
+        function omoshiroiSelect() {
+            rakufuncts = selectStringsEndingWithRaku(functions);
+            const randomIndex = Math.floor(Math.random() * rakufuncts.length);
+            const textarea = document.getElementById('function-code');
+
+            textarea.value = functionPrefix + rakufuncts[randomIndex] + functionPostfix;
+
+//          EXPERIMENTAL
+//          textarea.value = functionPrefix + generateRandomExpression('param1', 'param2', 'param3') + functionPostfix;
+
+            randomizeValues();
+        }
+
+
+
         function updatePattern() {
             if (updateTimeout) {
                 clearTimeout(updateTimeout);
@@ -157,6 +193,10 @@
                 const param3 = parseInt(param3Input.value);
                 const modfun = parseInt(modfunInput.value);
 
+                if (omoshiroi) {
+                    modfunInput.value = omoshiroiSelect();
+                    modfun = parseInt(modfunInput.value);
+                }
 
                 try {
                     eval(functionCode.value);
@@ -314,6 +354,7 @@ return `;
 
 }
         `;
+
         function selectRandomFunction() {
             const randomIndex = Math.floor(Math.random() * functions.length);
             const textarea = document.getElementById('function-code');
@@ -438,6 +479,7 @@ return `;
         invertInput.addEventListener('click', invertVal);
         integerInput.addEventListener('click', integerVal);
         updateBtn.addEventListener('click', updatePattern);
+        omoshiroiBtn.addEventListener('click',  omoshiroiSelect);
         saveBtn.addEventListener('click', saveImage);
         save4xBtn.addEventListener('click', saveImage4X);
         rotate90Btn.addEventListener('click', rotate90CCW);
