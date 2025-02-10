@@ -88,7 +88,7 @@ const functions = [
     "(~(((y ^ param1) / (y / x)) - (-(-y)))) % param2  // 87",
     "((((param1 & y) * (param2 + y)) & ((x + x) ^ (x - 9))) + (~((x - 3) / (-y)))) % param3  // 88",
     "(((~(18 - y)) + ((y % param1) + (x ^ x))) + ((~(y % param2)) | ((x - y) * (x / y)))) % param3  // 89",
-    "~(~((-y * param1) ^ (-x * param2))) % param3  // 90",
+    "~(~((-y * -Math.abs(param1)) ^ (-x * -Math.abs(param2)))) % param3  // 90",
     "((((-y) * (x + param1)) ^ ((y / param2) ^ (~y))) - (-(~(-y)))) % param3  // 91",
     "(((~(y | Math.abs(param1)) * (~(1 & y))) & (((y * x) * (param1 * y)) + ((~y) ^ (x * param2))))) % 3  // 92",
     "((((y & param1) - (x - x)) - (~(x & param2))) ^ ((~(x * 2)) / ((3 - y) % (x + y)))) % param3  // 93 楽", 
@@ -104,7 +104,7 @@ const functions = [
     "(~(-((y * x) ^ (y / Math.abs(param1))))) % param2  // 103", 
     "((-((x - y) - (~x))) ^ (((x | y) * (x + y)) ^ ((y + param1) * (x | param2)))) % param3  // 105", 
     "((((y & x) - (~x)) ^ ((Math.abs(param1) | y) ^ (x % param2))) | ((-(x & y)) & (~(~y)))) % param3 / 2  // 106 楽", 
-    "((-((7 * y) - (~x))) + (((~x) - (x | param1)) + ((x * Math.abs(param2)) - (x ^ 3)))) % param3  // 107",
+    "((-((7 * y) - (~x))) + (((~x) - (x | param1)) + ((x * Math.abs(param2)) - (x ^ 3)))) % param3  // 107 楽",
     "((~(~(~y))) ^ (~((x % param1) % (x % y)))) % param2  // 108", 
     "((((~x) % (-y)) - ((x | y) + (param1 - x))) * (~(-(x % param2)))) % param3  // 109", 
     "(( ((130 * Math.abs(param1) - y)) + (~x) - ((x ^ x) | (x | y))) ^ (-((~x) - (x * Math.abs(param2))))) % param3 / 2  // 111",
@@ -176,7 +176,7 @@ const functions = [
     "((((x * y) - (-x)) ^ (-(Math.abs(param1) ^ x))) / (~((y * y) + (x * param2)))) % param3  // 176 楽",
     "((~((x - param1) % (-y))) & (((x ^ y) + (~x)) ^ ((param2 + x) | (~y)))) % param3  // 177",
     "(((~(x | 2)) * ((param1 ^ y) - (y % x))) % (((x & 1) | (y & y)) % (-(y % param2)))) % param3  // 178", 
-    "((((x + y) ^ (~(y + param1))) * ((-x) + (y & x))) | (-((x * x * param2) * (x % y)))) % param3  // 179", 
+    "((((x + y) ^ (~(y + param1))) * ((-x) + (y & x))) | (-((x * x * param2) * (x % y)))) % (2 * param3 + 1)  // 179", 
     "((~(-(x | 1))) * ((-(param1 ^ y)) - (-(param2 ^ y)))) % param3  // 180", 
     "(-(-(((x - param2) % (y + param1)) & (y / y)))) % param3  // 181", 
     "((((x + x) ^ (x + y)) & ((~x) % (x ^ param1))) - (-((1 & x) & (param2 ^ y)))) % param3  // 182 楽",
@@ -193,4 +193,8 @@ const functions = [
     "((-((y % y) * (-y))) ^ (((Math.abs(param1) * x) & (y + param2)) | (-(~y)))) % param3 // 193",
     "((((~x) & (~x)) + ((x * 12) ^ (x ^ Math.abs(param1)))) + ((~(x + param2)) | ((-y) ^ (~y)))) % (2 * param3 + 1) // 194 楽", 
     "((((y % param1) / (-y)) ^ (-(-y))) + (((y % x) % (~x)) + ((x + y) | (y ^ param2)))) % param3  // 195",
+    "((-((-Math.abs(param1) % x) & (-Math.abs(param2) % x))) + (((3 & x) ^ (~x)) % ((y - x) % (y ^ x)))) % param3  // 196",
+    "((~((-y) % (param1 * y))) % (-((x | y) % (param2 + x)))) % param3  // 197",
+    "(-(~((~y) * Math.abs(param1) / (~x)  * Math.abs(param2)))) % param3 / 5  // 198"
+
 ];
