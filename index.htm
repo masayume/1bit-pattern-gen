@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Binary Pattern Generator v1.0</title>
+    <title>Binary Pattern Generator v1.1</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -40,9 +40,10 @@
         </div>
 
         <div class="button-group" style="width: 102%; ">
-            <button id="invert-btn" class="glass-button" title="black/white invert"><i class="fa-solid fa-square"></i> &nbsp;Invert</button>
-            <button id="integer-btn" class="glass-button" title="proper 1-bit output"><i class="fa-solid fa-wave-square"></i> &nbsp;Int</button>
-            <button id="color-btn" class="glass-button" title="not implemented yet"><i class="fa-solid fa-droplet"></i> &nbsp;Colors</button>
+            <button id="invert-btn" class="glass-button" title="black/white invert"><i class="fa-solid fa-square"></i></button>
+            <button id="integer-btn" class="glass-button" title="proper 1-bit output"><i class="fa-solid fa-wave-square"></i></button>
+            <button id="dithering-btn" class="glass-button" title="switch dithering"><i class="fa-solid fa-border-none"></i></button>
+            <button id="color-btn" class="glass-button" title="color gradients; not implemented yet"><i class="fa-solid fa-droplet"></i></button>
         </div>
 
         <br />
@@ -63,7 +64,7 @@
     <div class="sidebar">
         <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator</h2></a>
         <p id="par1">
-            by <a href="https://masayume.it">masayume</a>, ver. <b>1.0</b>, functions: 
+            by <a href="https://masayume.it">masayume</a>, ver. <b>1.1</b>, functions: 
         </p>
         <script>
             par1.textContent += (functions.length + 1);
@@ -101,6 +102,7 @@
         const baseSize = 256;
         let   invert = 0;
         let   tointeger = 0;
+        let   beyerDithering = 0;
         
         const bufferCanvas = document.createElement('canvas');
         bufferCanvas.width = baseSize;
@@ -114,6 +116,7 @@
         const modfunInput = document.getElementById('modfun');
         const invertInput = document.getElementById('invert-btn');
         const integerInput = document.getElementById('integer-btn');
+        const ditheringInput = document.getElementById('dithering-btn');
         const functionCode = document.getElementById('function-code');
         const updateBtn = document.getElementById('update-btn');
         const omoshiroiBtn = document.getElementById('omoshiroi-btn');
@@ -139,6 +142,15 @@
                 tointeger = 0
             } else {
                 tointeger = 1
+            } 
+            updatePattern();
+        }
+
+        function ditheringVal() {
+            if (beyerDithering == 1) {
+                beyerDithering = 0
+            } else {
+                beyerDithering = 1
             } 
             updatePattern();
         }
@@ -218,6 +230,9 @@
                                 value = Math.round(value);
                             }
 
+                            if (beyerDithering == 1) {
+                                value = bayerDither(x, y, value);
+                            }
 
                             if (invert) value = 1 - value;
                             const color = value * 255;
@@ -241,6 +256,40 @@
         }
 
         let rotationCount = 0; // Keep track of rotations
+
+        function bayerDither(x, y, value) {
+            const bayerMatrix = [
+              [0, 8, 2, 10],
+              [12, 4, 14, 6],
+              [3, 11, 1, 9],
+              [15, 7, 13, 5]
+            ];
+
+            const matrixSize = bayerMatrix.length; // Size of the Bayer matrix
+
+            // for (let y = 0; y < /* ... image height ... */; y++) {
+              // for (let x = 0; x < baseSize; x++) {
+                // const value = /* ... your original color value (0-1) ... */;
+                const color255 = value * 255;
+
+                const matrixX = x % matrixSize; // Wrap x within matrix dimensions
+                const matrixY = y % matrixSize; // Wrap y within matrix dimensions
+
+                const threshold = bayerMatrix[matrixY][matrixX] / (matrixSize * matrixSize); // Normalize threshold
+
+                let ditheredColor;
+                if (value > threshold) {
+                  ditheredColor = 255;
+                } else {
+                  ditheredColor = 0;
+                }
+
+              // }
+            // }
+
+            return ditheredColor;
+        }
+
 
         function rotate90CCW() {
             const canvas = document.getElementById("canvas");
@@ -478,6 +527,7 @@ return `;
         modfunInput.addEventListener('input', updatePattern);
         invertInput.addEventListener('click', invertVal);
         integerInput.addEventListener('click', integerVal);
+        ditheringInput.addEventListener('click', ditheringVal);
         updateBtn.addEventListener('click', updatePattern);
         omoshiroiBtn.addEventListener('click',  omoshiroiSelect);
         saveBtn.addEventListener('click', saveImage);
