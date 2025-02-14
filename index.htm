@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Binary Pattern Generator v1.1</title>
+    <title>1-bit Binary Pattern Generator v1.2</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -62,13 +62,23 @@
     </div>
 
     <div class="sidebar">
-        <a href="https://github.com/masayume/1bit-pattern-gen/"></a><h2>Binary Pattern Generator</h2></a>
+        <a href="https://github.com/masayume/1bit-pattern-gen/"><h2>Binary Pattern Generator</h2></a>
+        by <a href="https://masayume.it">masayume</a>, ver. <b>1.2</b>, 
         <p id="par1">
-            by <a href="https://masayume.it">masayume</a>, ver. <b>1.1</b>, functions: 
+        functions: 
         </p>
         <script>
             par1.textContent += (functions.length + 1);
         </script>
+        </p>
+        <p id="par2">
+        raku functions: 
+        </p>
+        <script>
+            const rakufuncts = functions.filter(str => str.endsWith('楽'));
+            par2.textContent += (rakufuncts.length + 1);
+        </script>
+
         <p>
             From  <a href="https://freeradical.zone/@bitartbot">bitartbot</a>, a bot which produces procedural art 
             by plotting an integer function taking the current coordinates and producing an integer result. 
