@@ -13,6 +13,13 @@ body {
     padding: 20px;
     overflow-y: auto;
 }
+.sidebar-left {
+    width: 320px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+}
 .main-content {
     flex: 1;
     padding: 10px 20px;
@@ -94,7 +101,7 @@ a, a:visited {
     border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for glass edge */
     border-radius: 8px; /* Round edges */
     color: white;
-    padding: 12px 12px;
+    padding: 6px 6px 6px 6px;
     font-size: 20px;
     cursor: pointer;
     backdrop-filter: blur(10px); /* Frosted glass effect */
