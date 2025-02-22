@@ -265,6 +265,13 @@ const functions = [
     "(((1 / x) / (-x * param1)) & (-(x & x))) | (((y | -Math.abs(param2)) - (22 | x)) / (-(x & param3)))  // 265",
     "(((1 / x) * (-x * -Math.abs(param1))) & (-(x & x))) | (((y | -Math.abs(param2)) - (22 | x)) / (-(x & param3)))  // 266",
     "(((1 / y) * (-y * -Math.abs(param1))) / (-(y & y))) | (((x | -Math.abs(param2)) - (22 | y)) / (-(y & param3)))  // 267",
-    "(((7 / y) / ((-x)) / (-(x & x))) | ((-Math.abs(param2) * (y | 5) % (22 | x)) / (-(x & param3))))  // 268"
-
+    "(((7 / y) / ((-x)) / (-(x & x))) | ((-Math.abs(param2) * (y | 5) % (22 | x)) / (-(x & param3))))  // 268",
+    "((((y ^ param1) % (~x)) | ((param2 * x) / (~y))) & (-(-(x | y)))) % param3  // 269",
+    "((((y ^ param1) | (~x)) | ((param2 * x) / (~y))) & (-(-(x | y)))) % param3  // 270",
+    "((((x ^ param1) * (~y)) / ((param2 * y) / (~x))) & (-(-(y | x)))) % param3  // 271",
+    "((((x ^ Math.abs(param1)) * (~y)) / ((Math.abs(param2) * y) / (~x))) / (-(-(y | x)))) % param3  // 272 鼠",
+    "((((x ^ Math.abs(param1)) * (~y)) / ((Math.abs(param2) * y) / (~x))) - (-(-(y | x)))) % param3  // 273",
+    "((((x % param1) + (y | y)) | ((1 % x) / (y - 1))) * (((~x) ^ (y - y)) ^ ((x + param2) - (x | y)))) % param3  // 274",
+    "((((x % param1) + (y | y)) | ((1 % x) / (y - 1))) / (((~x) ^ (y - y)) ^ ((x + param2) - (x | y)))) % param3  // 275 鼠"
+    
 ];
