@@ -28,6 +28,15 @@
             updatePattern();
         }
 
+        function floydsteinVal() {
+            if (floydsteinDithering == 1) {
+                floydsteinDithering = 0
+            } else {
+                floydsteinDithering = 1
+            } 
+            updatePattern();
+        }
+
         function invertVal() {
             if (invert == 1) {
                 invert = 0
@@ -129,6 +138,8 @@
                                 value = bayerDither(x, y, value);
                             }
 
+
+
                             if (invert) value = 1 - value;
                             const color = value * 255;
                             
@@ -137,6 +148,10 @@
                             data[idx + 3] = 255;
                         }
                     }
+
+                    if (floydsteinDithering == 1) {
+                        applyFloydSteinberg(imageData, canvas.width, canvas.height);
+                    }                    
                     
                     bufferCtx.putImageData(imageData, 0, 0);
                     
@@ -151,6 +166,62 @@
         }
 
         let rotationCount = 0; // Keep track of rotations
+
+
+
+
+        function floydSteinDither(imageData, width, height) {
+          const data = imageData.data;
+
+          function getPixelIndex(x, y) {
+            return (y * width + x) * 4;
+          }
+
+          function getPixelValue(x, y) {
+            if (x < 0 || x >= width || y < 0 || y >= height) {
+              return 0; // Out of bounds, treat as black
+            }
+            const index = getPixelIndex(x, y);
+            return data[index] / 255; // Convert 0-255 to 0-1
+          }
+
+          function setPixelValue(x, y, value) {
+            if (x < 0 || x >= width || y < 0 || y >= height) {
+              return; // Out of bounds, do nothing
+            }
+            const index = getPixelIndex(x, y);
+            data[index] = Math.round(value * 255);
+            data[index + 1] = Math.round(value * 255); // Grayscale, so R=G=B
+            data[index + 2] = Math.round(value * 255);
+          }
+
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              const oldValue = getPixelValue(x, y);
+              const newValue = Math.round(oldValue); // 0 or 1
+              setPixelValue(x, y, newValue);
+              const error = oldValue - newValue;
+
+              // Distribute error
+              setPixelValue(x + 1, y, getPixelValue(x + 1, y) + error * (7 / 16));
+              setPixelValue(x - 1, y + 1, getPixelValue(x - 1, y + 1) + error * (3 / 16));
+              setPixelValue(x, y + 1, getPixelValue(x, y + 1) + error * (5 / 16));
+              setPixelValue(x + 1, y + 1, getPixelValue(x + 1, y + 1) + error * (1 / 16));
+            }
+          }
+          return imageData;
+        }
+
+        // Example usage (assuming you have a canvas and 2D context):
+
+        function applyFloydSteinberg(ctx, cw, ch){
+            
+            const ditheredImageData = floydSteinDither(imageData, cw, ch);
+            ctx.drawImage(ditheredImageData, 0, 0, cw, ch);
+        }
+
+
+
 
         function bayerDither(x, y, value) {
             const bayerMatrix = [
