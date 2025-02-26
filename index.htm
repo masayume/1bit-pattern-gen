@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>1-bit Binary Pattern Generator v1.3</title>
+    <title>1-bit Binary Pattern Generator v1.31</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -52,8 +52,8 @@
 
         <div class="button-group" style="width: 100%; ">
             <button id="rndfn-btn" class="glass-button" title="plot random function"><b><i class="fa-solid fa-dice"></i><br />fn</b></button>
-            <button id="omoshiroi-btn" class="glass-button" title="interesting functions"><i class="fa-solid fa-dice"><br />楽</i></button>
-            <button id="grayscale-btn" class="glass-button" title="grayscale functions"><i class="fa-solid fa-dice"><br />鼠</i></button>
+            <button id="omoshiroi-btn" class="glass-button" title="interesting functions ('Raku, 楽')"><i class="fa-solid fa-dice"><br />楽</i></button>
+            <button id="grayscale-btn" class="glass-button" title="grayscale functions ('Nezumi, 鼠')"><i class="fa-solid fa-dice"><br />鼠</i></button>
             <button id="rndfn-val" class="glass-button-wide" title="set random param values"><b><i class="fa-solid fa-shuffle"></i><br />par</b></button>
             <button id="update-btn" class="glass-button" title="update plotting"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
@@ -66,16 +66,16 @@
 
     <div class="sidebar">
         <a href="https://github.com/masayume/1bit-pattern-gen/"><h2>Binary Pattern Generator</h2></a>
-        by <a href="https://masayume.it">masayume</a>, ver. <b>1.3</b>, 
+        by <a href="https://masayume.it">masayume</a>, ver. <b>1.31</b>, 
         <p id="par1">
-        functions: 
+        total functions available: 
         </p>
         <script>
-            par1.textContent += (functions.length + 1);
+            par1.textContent += (functions.length);
         </script>
         </p>
         <p id="par2">
-        楽 raku functions: 
+        楽 total raku functions: 
         </p>
         <script>
             rakufuncts = functions.filter(str => str.endsWith('楽'));
@@ -84,7 +84,7 @@
         </b>
 
         <p id="par3">
-        鼠 grayscale functions: 
+        鼠 total grayscale functions: 
         </p>
         <script>
             grayfuncts = functions.filter(str => str.endsWith('鼠'));

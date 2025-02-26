@@ -102,6 +102,7 @@ const functions = [
     "((((x / y) * (~y)) % ((~x) - (param1 / x))) ^ (((y % y) | (y | param2)) ^ (~(~y)))) % param3  // 101",
     "((~((~y) & (-y))) / (((param1 % x) - (2 & x)) ^ ((y - y) % (param2 % x)))) % param3  // 102 鼠", 
     "(~(-((y * x) ^ (y / Math.abs(param1))))) % param2  // 103", 
+    "(~(param1 * ((x * x) | (1 - y)) - ((Math.abs(param1) % y) | (y ^ Math.abs(param3))))) % 37  // 104",   
     "((-((x - y) - (~x))) ^ (((x | y) * (x + y)) ^ ((y + param1) * (x | param2)))) % param3  // 105", 
     "((((y & x) - (~x)) ^ ((Math.abs(param1) | y) ^ (x % param2))) | ((-(x & y)) & (~(~y)))) % param3 / 2  // 106 楽", 
     "((-((7 * y) - (~x))) + (((~x) - (x | param1)) + ((x * Math.abs(param2)) - (x ^ 3)))) % param3  // 107 楽",
@@ -299,6 +300,15 @@ const functions = [
     "((((x + param1) % (~y)) + ((y + x) - (y ^ y))) / (((x % param2) % (-y)) & (-(y - 3)))) % param3  // 299 鼠",
     "((((y / param1) - (-x)) * ((19 + y) % (x + y))) * (((-y) & (10 ^ y)) | ((param2 * y) % (-x)))) % param3  // 300 鼠",
     "((-((~x) * (y + x))) & (((y - param1) ^ (y / x)) % (~(x % param2)))) % param3  // 301", 
+    "-(~(-Math.abs(param1) * (-x) - (-Math.abs(param2) ^ y))) % (2 * param3 + 1)  // 302",
+    "((((x & param1) + (x % y)) * ((-x) / (x & y))) * (~((param2 % x) & (y % x)))) % param3  // 303",
+    "((((x * -Math.abs(param1)) / (x & x)) * ((y | y) / (-x))) | ((~(x | 16)) * ((param2 % y) * (y | x)))) % param3  // 304",
+    "(((-(y & x)) ^ (param1 * (y + x) * (y | x))) / (((-y) ^ (~x)) & ((param2 & y) % (y ^ x)))) % param3  // 305 鼠",
+    "(((-(y & x)) ^ (param1 * (y + x) * (y | x))) - (((-y) ^ (~x)) & ((param2 & y) % (y ^ x)))) % (2 * param3 + 1)  // 306",
+    "((((~x) ^ (x + param1)) - ((~y) + (~y))) + ((-(x / y)))) % param3  // 307 楽",
+    "((((~x) ^ (-Math.abs(x) + param1)) - ((~y) + (~y)) * 0) + (1 * (-(x / y)))) % param3  // 308 鼠",
+    "(~(param1 * ((x * x) | (1 - y)) - ((param2 % y) | (y ^ Math.abs(param3))))) % 7   // 309",
+    "(~(param1 * ((x * x) | (1 - y)) - ((param2 % y) | (y ^ Math.abs(param3))))) % 3  // 310",
 
-    
+
 ];
