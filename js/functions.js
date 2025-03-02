@@ -341,5 +341,16 @@ const functions = [
     "(-(((~x) & (13 - x) * param1) + (param2 * (y + y) ^ (x / y)))) % param3  // 340",
     "(-(((~x) & (13 - x) * param1) | (param2 * (y + y) / (x / y)))) % param3  // 341",
     "(~((-(x ^ y)) + ((y - x) / (param1 * y)))) % param2  // 342",
+    "((((~y) % (-x)) + ((y * x) / (x | y))) / (((param1 - y) + (~x)) % (-(param2 | x)))) % param3  // 343 鼠",
+    "((((x * y) + (-x)) - ((-x) ^ (~y))) & ((-(param1 ^ x)) % ((param2 - x) & (x / y)))) % param3  // 344",
+    "((((x * y) + (-x)) - ((-x) ^ (~y))) & ((-(param1 ^ x)) / ((param2 - x) + (x / y)))) % param3  // 345",
+    "((((x * y) + (-x)) - ((-x) ^ (~y))) & ((-(param1 ^ x)) + ((param2 - x) / (x / y)))) % param3  // 346",
+    "(((~x) | (param1 * x)) + (~(y | y))) * (Math.abs(param2) * (~(~y)) / ((~y) | (x % param3)))  // 347 鼠",
+    "(((~x) | (param1 * x)) + (~(y | y))) * (Math.abs(param2) * (~(~y)) * ((~y) / (x % param3)))  // 348",
+    "(~(param1 * ((y + y) + (~x)) | (~(x * y / param2)))) % param3  // 349",
+    "(-((param1 * x) / (x - y))) | (((16 | x) | (y % param2)) - (-(param3 & x)))  // 350 鼠",
+    "(-((-Math.abs(param1) * y) + (y + y))) / (((param1 | y) | (x % param2)) - (-(param3 & y)))  // 351",
+    "((((~y) ^ (y + param1)) / ((5 % x) - (x / y))) & (((param2 | y) & (~y)) | ((1 % y) & (6 & y)))) % param3  // 352",
+
 
 ];
