@@ -76,6 +76,21 @@
           return [grayStrings[randomIndex]]; // Return an array containing the single randomly selected element
         }
 
+        function selectStringsEndingWithGara(arr) {
+          if (!Array.isArray(arr)) {
+            throw new Error("Input must be an array.");
+          }
+
+          const textureStrings = arr.filter(str => str.endsWith('柄'));
+
+          if (textureStrings.length === 0) {
+            return []; // Return an empty array if no strings end with '柄'
+          }
+
+          const randomIndex = Math.floor(Math.random() * textureStrings.length);
+          return [textureStrings[randomIndex]]; // Return an array containing the single randomly selected element
+        }
+
         function omoshiroiSelect() {
             rakufuncts = selectStringsEndingWithRaku(functions);
             const randomIndex = Math.floor(Math.random() * rakufuncts.length);
@@ -96,7 +111,15 @@
             randomizeValues();
         }
 
+        function textureSelect() {
+            garafuncts = selectStringsEndingWithGara(functions);
+            const randomIndex = Math.floor(Math.random() * garafuncts.length);
+            const textarea = document.getElementById('function-code');
 
+            textarea.value = functionPrefix + garafuncts[randomIndex] + functionPostfix;
+
+            randomizeValues();
+        }
 
         function updatePattern() {
             if (updateTimeout) {

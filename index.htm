@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>1-bit Binary Pattern Generator v1.32</title>
+    <title>1-bit Binary Pattern Generator v1.4</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -54,6 +54,7 @@
             <button id="rndfn-btn" class="glass-button" title="plot random function"><b><i class="fa-solid fa-dice"></i><br />fn</b></button>
             <button id="omoshiroi-btn" class="glass-button" title="interesting functions ('Raku, 楽')"><i class="fa-solid fa-dice"><br />楽</i></button>
             <button id="grayscale-btn" class="glass-button" title="grayscale functions ('Nezumi, 鼠')"><i class="fa-solid fa-dice"><br />鼠</i></button>
+            <button id="texture-btn" class="glass-button" title="texture functions ('Gara, 柄')"><i class="fa-solid fa-dice"><br />柄</i></button>            
             <button id="rndfn-val" class="glass-button-wide" title="set random param values"><b><i class="fa-solid fa-shuffle"></i><br />par</b></button>
             <button id="update-btn" class="glass-button" title="update plotting"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
@@ -66,7 +67,7 @@
 
     <div class="sidebar">
         <a href="https://github.com/masayume/1bit-pattern-gen/"><h2>Binary Pattern Generator</h2></a>
-        by <a href="https://masayume.it">masayume</a>, ver. <b>1.32</b>, 
+        by <a href="https://masayume.it">masayume</a>, ver. <b>1.4</b>, 
         <p id="par1">
         total functions available: 
         </p>
@@ -89,6 +90,14 @@
         <script>
             grayfuncts = functions.filter(str => str.endsWith('鼠'));
             par3.textContent += (grayfuncts.length + 1);
+        </script>
+
+        <p id="par4">
+        鼠 total texture functions: 
+        </p>
+        <script>
+            garafuncts = functions.filter(str => str.endsWith('柄'));
+            par4.textContent += (garafuncts.length + 1);
         </script>
 
         <p>
@@ -146,6 +155,7 @@
         const updateBtn = document.getElementById('update-btn');
         const omoshiroiBtn = document.getElementById('omoshiroi-btn');
         const grayscaleBtn = document.getElementById('grayscale-btn');
+        const textureBtn = document.getElementById('texture-btn');
         const saveBtn = document.getElementById('save-btn');
         const save4xBtn = document.getElementById('save4x-btn');
         const rotate90Btn = document.getElementById('rotate90-btn');
@@ -176,6 +186,7 @@
         updateBtn.addEventListener('click', updatePattern);
         omoshiroiBtn.addEventListener('click',  omoshiroiSelect);
         grayscaleBtn.addEventListener('click',  grayscaleSelect);
+        textureBtn.addEventListener('click',  textureSelect);
         saveBtn.addEventListener('click', saveImage);
         save4xBtn.addEventListener('click', saveImage4X);
         rotate90Btn.addEventListener('click', rotate90CCW);
