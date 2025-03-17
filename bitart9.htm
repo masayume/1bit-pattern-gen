@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Powerful Bitwise Art Generator with Audio & Recording</title>
+  <style>
+    body {
+      background: #1a1a1a;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: 2em;
+      margin: 0.5em 0;
+    }
+    details {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+    }
+    details summary {
+      font-size: 1.1em;
+      cursor: pointer;
+      outline: none;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .controls button,
+    .controls input[type="range"],
+    .controls input[type="checkbox"],
+    .controls select {
+      background: #333;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .controls label {
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    canvas {
+      display: block;
+      margin: 1rem auto;
+      border: 2px solid #444;
+      max-width: 100%;
+      height: auto;
+      transition: opacity 1s;
+    }
+    #algorithmContainer,
+    #tokenUsage {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 5px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    #algorithmContainer h3,
+    #tokenUsage h3 {
+      margin-top: 0;
+    }
+    #algorithm {
+      width: 100%;
+      padding: 0.5rem;
+      font-family: monospace;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    #notes {
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+    #errorMessage {
+      font-size: 0.9rem;
+      color: #f66;
+      min-height: 1.2em;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.8em;
+      margin-top: 1rem;
+      color: #888;
+    }
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      .controls label {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Powerful Bitwise Art Generator with Audio & Recording</h1>
+    </header>
+    
+    <!-- Collapsible Menu for Buttons -->
+    <details open>
+      <summary>Action Buttons</summary>
+      <div class="controls">
+        <button id="newAlgorithmBtn" title="Generate a new random algorithm">New Algorithm</button>
+        <button id="transitionAlgorithmBtn" title="Transition to a new algorithm">Transition Algorithm</button>
+        <button id="downloadArtBtn" title="Download current art as PNG">Download Art</button>
+        <button id="generateAudioBtn" title="Generate audio from art">Generate Audio</button>
+        <button id="downloadAudioBtn" title="Download audio as WAV">Download Audio (.wav)</button>
+        <button id="recordButton" title="Record the animation">Start Recording</button>
+        <button id="shareAlgorithmBtn" title="Share current algorithm">Share Algorithm</button>
+      </div>
+    </details>
+    
+    <!-- Collapsible Menu for Sliders and Other Controls -->
+    <details open>
+      <summary>Sliders & Controls</summary>
+      <div class="controls">
+        <label>
+          Resolution:
+          <input type="range" id="resolutionSlider" min="256" max="1024" step="64" value="512">
+          <span id="resolutionValue">512</span> px
+        </label>
+        <label>
+          Zoom:
+          <input type="range" id="zoomSlider" min="0.5" max="5" step="0.1" value="1">
+          <span id="zoomValue">1</span>x
+        </label>
+        <label>
+          Pan X:
+          <input type="range" id="panXSlider" min="-50" max="50" step="0.1" value="0">
+          <span id="panXValue">0</span>
+        </label>
+        <label>
+          Pan Y:
+          <input type="range" id="panYSlider" min="-50" max="50" step="0.1" value="0">
+          <span id="panYValue">0</span>
+        </label>
+        <label>
+          Depth:
+          <input type="range" id="zSlider" min="-50" max="50" step="0.1" value="0">
+          <span id="zValue">0</span>
+        </label>
+        <label>
+          Rotate:
+          <input type="range" id="rotateSlider" min="0" max="360" step="1" value="0">
+          <span id="rotateValue">0</span>°
+        </label>
+        <label>
+          Tilt:
+          <input type="range" id="tiltSlider" min="-45" max="45" step="1" value="0">
+          <span id="tiltValue">0</span>°
+        </label>
+        <label>
+          Skew:
+          <input type="range" id="skewSlider" min="-45" max="45" step="1" value="0">
+          <span id="skewValue">0</span>°
+        </label>
+        <label>
+          Hue:
+          <input type="range" id="hueSlider" min="0" max="360" step="1" value="0">
+          <span id="hueValue">0</span>°
+        </label>
+        <label>
+          Color Mode:
+          <select id="colorMode">
+            <option value="colored" selected>Colored</option>
+            <option value="binary">Binary</option>
+          </select>
+        </label>
+        <label>
+          Seed:
+          <input type="range" id="seedSlider" min="0" max="100000" step="1" value="42">
+          <span id="seedValue">42</span>
+        </label>
+        <label>
+          Seed Active:
+          <input type="checkbox" id="seedToggle" checked>
+        </label>
+        <label>
+          Perspective (Y):
+          <input type="range" id="perspectiveSlider" min="0" max="1" step="0.01" value="0">
+          <span id="perspectiveValue">0</span>
+        </label>
+        <label>
+          Perspective (X):
+          <input type="range" id="perspectiveXSlider" min="0" max="1" step="0.01" value="0">
+          <span id="perspectiveXValue">0</span>
+        </label>
+        <label>
+          Complexity:
+          <input type="range" id="complexitySlider" min="1" max="5" step="1" value="3">
+          <span id="complexityValue">3</span>
+        </label>
+        <label>
+          Audio Mode:
+          <select id="audioMode">
+            <option value="binary">Bytebeat (Binary)</option>
+            <option value="waveform">Waveform (Grayscale)</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" id="animate"> Animate
+        </label>
+      </div>
+    </details>
+    
+    <canvas id="artCanvas"></canvas>
+    <div id="algorithmContainer">
+      <h3>Current Algorithm: f(x, y, z, t) =</h3>
+      <input type="text" id="algorithm">
+      <div id="notes">
+        Allowed tokens: x, y, z, t, sin, cos, tan, asin, acos, atan, atan2, log, abs, sqrt, min, max, pow, exp, hypot, cbrt, sign, floor, ceil, round, log10, log2, sinh, cosh, tanh, asinh, acosh, atanh, expm1, log1p, trunc, random, sec, csc, cot, deg, rad, sinc, clamp, mix, avg, randomInt, PI, E, LN2, LN10, SQRT2, SQRT1_2, LOG2E, LOG10E, PHI, fact, logb, chaos1, chaos2, saw, triangle, square, randBetween, noise, mandelbrot, julia, bitReverse, rotateLeft, rotateRight, bitCount, parity, logistic, pulse, TAU, fract, dist, cube, absDiff, xor, sq, fourth, inv, median, step, map, smootherstep, easeInOutQuad, lerp, rand, +, -, *, /, %, &, |, ^, <<, >>, ~, (, ), .
+      </div>
+      <div id="errorMessage"></div>
+    </div>
+    <div id="tokenUsage">
+      <h3>Token Usage Guide</h3>
+      <p>
+        Use <strong>x</strong>, <strong>y</strong>, <strong>z</strong>, and <strong>t</strong> as your primary variables (t represents time for animations and z represents depth).
+      </p>
+      <p>
+        Standard math and bitwise functions are available along with extra tokens. Experiment with the algorithm, generate art and audio, and adjust the complexity.
+      </p>
+    </div>
+    <footer>
+      <p>&copy; 2025 Bitwise Art Generator</p>
+    </footer>
+  </div>
+  <script>
+    (function() {
+      "use strict";
+      
+      // --- Helper Functions ---
+      function hslToRgb(h, s, l) {
+        s /= 100;
+        l /= 100;
+        let c = (1 - Math.abs(2 * l - 1)) * s;
+        let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        let m = l - c / 2;
+        let r = 0, g = 0, b = 0;
+        if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+        else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+        else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+        else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+        else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+        else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+        return { 
+          r: Math.round((r + m) * 255), 
+          g: Math.round((g + m) * 255), 
+          b: Math.round((b + m) * 255)
+        };
+      }
+      
+      // --- Standard Helper Functions ---
+      function sec(x) { return 1 / Math.cos(x); }
+      function csc(x) { return 1 / Math.sin(x); }
+      function cot(x) { return 1 / Math.tan(x); }
+      function deg(x) { return x * 180 / Math.PI; }
+      function rad(x) { return x * Math.PI / 180; }
+      function sinc(x) { return x === 0 ? 1 : Math.sin(x) / x; }
+      function clamp(x, min, max) { return Math.min(Math.max(x, min), max); }
+      function mix(a, b, t) { return a * (1 - t) + b * t; }
+      function avg(a, b) { return (a + b) / 2; }
+      function randomInt(n) { return Math.floor(myRandom() * n); }
+      const PHI = (1 + Math.sqrt(5)) / 2;
+      function fact(n) {
+        if (n < 0) return NaN;
+        if (n <= 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) result *= i;
+        return result;
+      }
+      function logb(a, b) { return Math.log(a) / Math.log(b); }
+      function chaos1(t) {
+        let x = 0.5;
+        let N = Math.floor(t * 10) % 50;
+        for (let i = 0; i < N; i++) x = 3.9 * x * (1 - x);
+        return x;
+      }
+      function chaos2(t) {
+        let x = 0.7;
+        let N = Math.floor(t * 8) % 50;
+        for (let i = 0; i < N; i++) x = 3.7 * x * (1 - x);
+        return x;
+      }
+      function saw(t) { return 2 * (t - Math.floor(t + 0.5)); }
+      function triangle(t) { return 2 * Math.abs(saw(t)) - 1; }
+      function square(t) { return saw(t) >= 0 ? 1 : -1; }
+      function randBetween(a, b) { return a + myRandom() * (b - a); }
+      function noise(t) { return t - Math.floor(t); }
+      function mandelbrot(x, y) {
+        let zx = x, zy = y;
+        const maxIter = 50;
+        for (let i = 0; i < maxIter; i++) {
+          let xtemp = zx * zx - zy * zy + x;
+          zy = 2 * zx * zy + y;
+          zx = xtemp;
+          if (zx * zx + zy * zy > 4) return i / maxIter;
+        }
+        return 1;
+      }
+      function julia(x, y, cRe, cIm) {
+        let zx = x, zy = y;
+        const maxIter = 50;
+        for (let i = 0; i < maxIter; i++) {
+          let xtemp = zx * zx - zy * zy + cRe;
+          zy = 2 * zx * zy + cIm;
+          zx = xtemp;
+          if (zx * zx + zy * zy > 4) return i / maxIter;
+        }
+        return 1;
+      }
+      function bitReverse(n) {
+        n = n >>> 0;
+        let rev = 0;
+        for (let i = 0; i < 32; i++) {
+          rev = (rev << 1) | (n & 1);
+          n >>>= 1;
+        }
+        return rev;
+      }
+      function rotateLeft(n, bits) {
+        n = n >>> 0;
+        return ((n << bits) | (n >>> (32 - bits))) >>> 0;
+      }
+      function rotateRight(n, bits) {
+        n = n >>> 0;
+        return ((n >>> bits) | (n << (32 - bits))) >>> 0;
+      }
+      function bitCount(n) {
+        n = n >>> 0;
+        let count = 0;
+        while (n) {
+          count += n & 1;
+          n >>>= 1;
+        }
+        return count;
+      }
+      function parity(n) {
+        return bitCount(n) % 2;
+      }
+      function logistic(x, r) {
+        return r * x * (1 - x);
+      }
+      function pulse(x, threshold) {
+        return x > threshold ? 1 : 0;
+      }
+      const TAU = 2 * Math.PI;
+      function fract(n) { return n - Math.floor(n); }
+      function dist(x1, y1, x2, y2) { return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2); }
+      function cube(n) { return n * n * n; }
+      function absDiff(a, b) { return Math.abs(a - b); }
+      function xor(a, b) { return a ^ b; }
+      function sq(n) { return n * n; }
+      function fourth(n) { return n * n * n * n; }
+      function inv(n) { return n === 0 ? 0 : 1 / n; }
+      function median(a, b, c) { return a + b + c - Math.min(a, b, c) - Math.max(a, b, c); }
+      function step(x, threshold) { return x < threshold ? 0 : 1; }
+      
+      // --- New Helper Functions (Additional Tokens) ---
+      function map(value, start1, stop1, start2, stop2) {
+        return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+      }
+      function smootherstep(x, edge0, edge1) {
+        let t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+        return t * t * t * (t * (t * 6 - 15) + 10);
+      }
+      function easeInOutQuad(x) {
+        return x < 0.5 ? 2 * x * x : -1 + (4 - 2 * x) * x;
+      }
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+      
+      // --- Seeded Random Generator and Toggle ---
+      let seedVal = parseInt(document.getElementById('seedSlider').value);
+      const seedToggle = document.getElementById('seedToggle');
+      let seedActive = seedToggle.checked;
+      seedToggle.addEventListener('change', function() {
+        seedActive = this.checked;
+      });
+      function seededRandom() {
+        seedVal = (seedVal * 9301 + 49297) % 233280;
+        return seedVal / 233280;
+      }
+      function myRandom() {
+        return seedActive ? seededRandom() : Math.random();
+      }
+      function rand() {
+        return myRandom();
+      }
+      
+      // --- Perspective Drawing Function (X and Y) ---
+      function drawPerspectiveImageXY(ctx, image, perspectiveY, perspectiveX) {
+        const numSlicesY = 50;
+        const numSlicesX = 50;
+        const sliceHeight = image.height / numSlicesY;
+        const sliceWidth = image.width / numSlicesX;
+        for (let i = 0; i < numSlicesY; i++) {
+          for (let j = 0; j < numSlicesX; j++) {
+            let sx = j * sliceWidth;
+            let sy = i * sliceHeight;
+            let sWidth = sliceWidth;
+            let sHeight = sliceHeight;
+            let scaleY = (1 - perspectiveY) + (perspectiveY * (i / numSlicesY));
+            let scaleX = (1 - perspectiveX) + (perspectiveX * (j / numSlicesX));
+            let destWidth = sliceWidth * scaleX;
+            let destHeight = sliceHeight * scaleY;
+            let dx = -image.width / 2 + j * sliceWidth * scaleX;
+            let dy = -image.height / 2 + i * sliceHeight * scaleY;
+            ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, destWidth, destHeight);
+          }
+        }
+      }
+      
+      // --- Global Variables and DOM Elements ---
+      const canvas = document.getElementById('artCanvas');
+      const ctx = canvas.getContext('2d');
+      const algorithmInput = document.getElementById('algorithm');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      const newAlgorithmBtn = document.getElementById('newAlgorithmBtn');
+      const transitionAlgorithmBtn = document.getElementById('transitionAlgorithmBtn');
+      const downloadArtBtn = document.getElementById('downloadArtBtn');
+      const generateAudioBtn = document.getElementById('generateAudioBtn');
+      const downloadAudioBtn = document.getElementById('downloadAudioBtn');
+      const recordButton = document.getElementById('recordButton');
+      const shareAlgorithmBtn = document.getElementById('shareAlgorithmBtn');
+      
+      const resolutionSlider = document.getElementById('resolutionSlider');
+      const resolutionValue = document.getElementById('resolutionValue');
+      const zoomSlider = document.getElementById('zoomSlider');
+      const zoomValue = document.getElementById('zoomValue');
+      const panXSlider = document.getElementById('panXSlider');
+      const panXValue = document.getElementById('panXValue');
+      const panYSlider = document.getElementById('panYSlider');
+      const panYValue = document.getElementById('panYValue');
+      const zSlider = document.getElementById('zSlider');
+      const zValue = document.getElementById('zValue');
+      const rotateSlider = document.getElementById('rotateSlider');
+      const rotateValue = document.getElementById('rotateValue');
+      const tiltSlider = document.getElementById('tiltSlider');
+      const tiltValue = document.getElementById('tiltValue');
+      const skewSlider = document.getElementById('skewSlider');
+      const skewValue = document.getElementById('skewValue');
+      const hueSlider = document.getElementById('hueSlider');
+      const hueValue = document.getElementById('hueValue');
+      const seedSlider = document.getElementById('seedSlider');
+      const seedValue = document.getElementById('seedValue');
+      const perspectiveSlider = document.getElementById('perspectiveSlider');
+      const perspectiveValue = document.getElementById('perspectiveValue');
+      const perspectiveXSlider = document.getElementById('perspectiveXSlider');
+      const perspectiveXValue = document.getElementById('perspectiveXValue');
+      const colorModeSelect = document.getElementById('colorMode');
+      
+      const complexitySlider = document.getElementById('complexitySlider');
+      const complexityValue = document.getElementById('complexityValue');
+      const audioModeSelect = document.getElementById('audioMode');
+      const animateCheckbox = document.getElementById('animate');
+      
+      let WIDTH = parseInt(resolutionSlider.value);
+      let HEIGHT = parseInt(resolutionSlider.value);
+      canvas.width = WIDTH;
+      canvas.height = HEIGHT;
+      let zoom = parseFloat(zoomSlider.value);
+      let panX = parseFloat(panXSlider.value);
+      let panY = parseFloat(panYSlider.value);
+      let z = parseFloat(zSlider.value);
+      let rotation = parseFloat(rotateSlider.value);
+      let tilt = parseFloat(tiltSlider.value);
+      let skew = parseFloat(skewSlider.value);
+      let maxDepth = parseInt(complexitySlider.value);
+      let audioMode = audioModeSelect.value;
+      let perspective = parseFloat(perspectiveSlider.value);
+      let perspectiveX = parseFloat(perspectiveXSlider.value);
+      
+      let animationFrameId = null;
+      let startTime = null;
+      let currentAlgorithm = "";
+      let undoStack = [];
+      
+      let recording = false;
+      let mediaRecorder = null;
+      let recordedChunks = [];
+      
+      // --- Expanded Random Algorithm Generation ---
+      function randomElement(arr) {
+        return arr[Math.floor(myRandom() * arr.length)];
+      }
+      function generateTerm(depth = 0) {
+        if (depth > maxDepth) {
+          return myRandom() > 0.33 ? randomElement(['x', 'y', 'z', 't']) : randomElement(['x', 'y', 'z']);
+        }
+        const extraTokens = ['sin', 'cos', 'tan', 'sqrt', 'fract', 'noise', 'mandelbrot', 'julia', 'map', 'smootherstep', 'easeInOutQuad', 'lerp', 'rand', 'saw', 'triangle', 'square'];
+        const operations = {
+          bitwise: ['&', '|', '^', '<<', '>>'],
+          arithmetic: ['*', '+', '-', '%']
+        };
+        if (myRandom() > 0.7 && depth < maxDepth) {
+          return randomElement(extraTokens) + '(' + generateTerm(depth + 1) + ')';
+        }
+        if (myRandom() > 0.5 && depth < maxDepth) {
+          return `${randomElement(['-', '~'])}(${generateTerm(depth + 1)})`;
+        }
+        if (myRandom() > 0.3) {
+          return `(${generateTerm(depth + 1)} ${randomElement(operations.bitwise)} ${generateTerm(depth + 1)})`;
+        }
+        return `(${generateTerm(depth + 1)} ${randomElement(operations.arithmetic)} ${generateTerm(depth + 1)})`;
+      }
+      function generateAlgorithm() {
+        const terms = Array.from({ length: 4 }, () => generateTerm());
+        return `(((${terms.join(' ^ ')}) % 2) + 2) % 2`;
+      }
+      function generateNewAlgorithm() {
+        let valid = false, attempt = 0, candidate = "";
+        while (!valid && attempt < 10) {
+          candidate = generateAlgorithm();
+          try {
+            new Function(
+              'x','y','z','t',
+              'sin','cos','tan','asin','acos','atan','atan2','log','abs','sqrt',
+              'min','max','pow','exp','hypot','cbrt','sign','floor','ceil','round',
+              'log10','log2','sinh','cosh','tanh','asinh','acosh','atanh',
+              'expm1','log1p','trunc','random',
+              'sec','csc','cot','deg','rad',
+              'sinc','clamp','mix','avg','randomInt',
+              'PI','E','LN2','LN10','SQRT2','SQRT1_2','LOG2E','LOG10E','PHI',
+              'fact','logb','chaos1','chaos2','saw','triangle','square','randBetween','noise',
+              'mandelbrot','julia','bitReverse','rotateLeft','rotateRight','bitCount','parity','logistic','pulse','TAU',
+              'fract','dist','cube','absDiff','xor',
+              'sq','fourth','inv','median','step',
+              'map','smootherstep','easeInOutQuad','lerp','rand',
+              `return ${candidate};`
+            )(1, 1, 0, 0,
+              Math.sin, Math.cos, Math.tan, Math.asin, Math.acos, Math.atan, Math.atan2, Math.log, Math.abs, Math.sqrt,
+              Math.min, Math.max, Math.pow, Math.exp, Math.hypot, Math.cbrt, Math.sign, Math.floor, Math.ceil, Math.round,
+              Math.log10, Math.log2, Math.sinh, Math.cosh, Math.tanh, Math.asinh, Math.acosh, Math.atanh,
+              Math.expm1, Math.log1p, Math.trunc, Math.random,
+              sec, csc, cot, deg, rad,
+              sinc, clamp, mix, avg, randomInt,
+              Math.PI, Math.E, Math.LN2, Math.LN10, Math.SQRT2, Math.SQRT1_2, Math.LOG2E, Math.LOG10E, PHI,
+              fact, logb, chaos1, chaos2, saw, triangle, square, randBetween, noise,
+              mandelbrot, julia, bitReverse, rotateLeft, rotateRight, bitCount, parity, logistic, pulse, TAU,
+              fract, dist, cube, absDiff, xor,
+              sq, fourth, inv, median, step,
+              map, smootherstep, easeInOutQuad, lerp, rand
+            );
+            valid = true;
+          } catch (e) {
+            console.error("Invalid algorithm, retrying:", candidate, e);
+            attempt++;
+          }
+        }
+        console.log("New algorithm generated:", candidate);
+        if (currentAlgorithm) undoStack.push(currentAlgorithm);
+        currentAlgorithm = candidate;
+        algorithmInput.value = currentAlgorithm;
+        if (!animateCheckbox.checked) generateArt(0);
+      }
+      
+      function validateAlgorithm(alg) {
+        errorMessage.textContent = "";
+        const tokens = alg.match(/(<<|>>|[A-Za-z][A-Za-z0-9_]*|\d+|[+\-*/%&|^~().])/g);
+        if (!tokens) return false;
+        const allowedTokens = [
+          'x','y','z','t',
+          'sin','cos','tan','asin','acos','atan','atan2','log','abs','sqrt',
+          'min','max','pow','exp','hypot','cbrt','sign','floor','ceil','round',
+          'log10','log2','sinh','cosh','tanh','asinh','acosh','atanh',
+          'expm1','log1p','trunc','random',
+          'sec','csc','cot','deg','rad',
+          'sinc','clamp','mix','avg','randomInt',
+          'PI','E','LN2','LN10','SQRT2','SQRT1_2','LOG2E','LOG10E','PHI',
+          'fact','logb','chaos1','chaos2','saw','triangle','square','randBetween','noise',
+          'mandelbrot','julia','bitReverse','rotateLeft','rotateRight','bitCount','parity','logistic','pulse','TAU',
+          'fract','dist','cube','absDiff','xor',
+          'sq','fourth','inv','median','step',
+          'map','smootherstep','easeInOutQuad','lerp','rand',
+          '+','-','*','/','%','&','|','^','<<','>>','~','(',')','.'
+        ];
+        for (let token of tokens) {
+          token = token.trim();
+          if (token === "") continue;
+          if (/^\d+$/.test(token)) continue;
+          if (!allowedTokens.includes(token)) {
+            errorMessage.textContent = "Invalid token: " + token;
+            console.error("Invalid token:", token);
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      // --- Updated Rendering Function ---
+      function getColor(value) {
+        if (colorModeSelect.value === 'binary') {
+          let index = Math.abs(value % 2);
+          return index === 0 ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 };
+        } else {
+          let normalized = (value + 1) / 2;
+          let baseHue = parseFloat(hueSlider.value);
+          let h = (baseHue + normalized * 360) % 360;
+          let s = 100;
+          let l = normalized * 50 + 25;
+          return hslToRgb(h, s, l);
+        }
+      }
+      
+      function generateArt(t) {
+        if (!validateAlgorithm(currentAlgorithm)) {
+          console.error("Invalid algorithm.");
+          return;
+        }
+        let func;
+        try {
+          func = new Function(
+            'x','y','z','t',
+            'sin','cos','tan','asin','acos','atan','atan2','log','abs','sqrt',
+            'min','max','pow','exp','hypot','cbrt','sign','floor','ceil','round',
+            'log10','log2','sinh','cosh','tanh','asinh','acosh','atanh',
+            'expm1','log1p','trunc','random',
+            'sec','csc','cot','deg','rad',
+            'sinc','clamp','mix','avg','randomInt',
+            'PI','E','LN2','LN10','SQRT2','SQRT1_2','LOG2E','LOG10E','PHI',
+            'fact','logb','chaos1','chaos2','saw','triangle','square','randBetween','noise',
+            'mandelbrot','julia','bitReverse','rotateLeft','rotateRight','bitCount','parity','logistic','pulse','TAU',
+            'fract','dist','cube','absDiff','xor',
+            'sq','fourth','inv','median','step',
+            'map','smootherstep','easeInOutQuad','lerp','rand',
+            `return ${currentAlgorithm};`
+          );
+        } catch (err) {
+          errorMessage.textContent = "Error creating function.";
+          console.error("Creation error:", err);
+          return;
+        }
+        try {
+          func(
+            (WIDTH/2 - WIDTH/2)/zoom,
+            (HEIGHT/2 - HEIGHT/2)/zoom,
+            z,
+            t,
+            Math.sin, Math.cos, Math.tan, Math.asin, Math.acos, Math.atan, Math.atan2, Math.log, Math.abs, Math.sqrt,
+            Math.min, Math.max, Math.pow, Math.exp, Math.hypot, Math.cbrt, Math.sign, Math.floor, Math.ceil, Math.round,
+            Math.log10, Math.log2, Math.sinh, Math.cosh, Math.tanh, Math.asinh, Math.acosh, Math.atanh,
+            Math.expm1, Math.log1p, Math.trunc, Math.random,
+            sec, csc, cot, deg, rad,
+            sinc, clamp, mix, avg, randomInt,
+            Math.PI, Math.E, Math.LN2, Math.LN10, Math.SQRT2, Math.SQRT1_2, Math.LOG2E, Math.LOG10E, PHI,
+            fact, logb, chaos1, chaos2, saw, triangle, square, randBetween, noise,
+            mandelbrot, julia, bitReverse, rotateLeft, rotateRight, bitCount, parity, logistic, pulse, TAU,
+            fract, dist, cube, absDiff, xor,
+            sq, fourth, inv, median, step,
+            map, smootherstep, easeInOutQuad, lerp, rand
+          );
+        } catch (err) {
+          errorMessage.textContent = "Error evaluating function.";
+          console.error("Evaluation error:", err);
+          return;
+        }
+        const imageData = ctx.createImageData(WIDTH, HEIGHT);
+        const data = imageData.data;
+        for (let yPixel = 0; yPixel < HEIGHT; yPixel++) {
+          for (let xPixel = 0; xPixel < WIDTH; xPixel++) {
+            const tx = (xPixel - WIDTH/2)/zoom + panX;
+            const ty = (yPixel - HEIGHT/2)/zoom + panY;
+            let value;
+            try {
+              value = func(tx, ty, z, t,
+                Math.sin, Math.cos, Math.tan, Math.asin, Math.acos, Math.atan, Math.atan2, Math.log, Math.abs, Math.sqrt,
+                Math.min, Math.max, Math.pow, Math.exp, Math.hypot, Math.cbrt, Math.sign, Math.floor, Math.ceil, Math.round,
+                Math.log10, Math.log2, Math.sinh, Math.cosh, Math.tanh, Math.asinh, Math.acosh, Math.atanh,
+                Math.expm1, Math.log1p, Math.trunc, Math.random,
+                sec, csc, cot, deg, rad,
+                sinc, clamp, mix, avg, randomInt,
+                Math.PI, Math.E, Math.LN2, Math.LN10, Math.SQRT2, Math.SQRT1_2, Math.LOG2E, Math.LOG10E, PHI,
+                fact, logb, chaos1, chaos2, saw, triangle, square, randBetween, noise,
+                mandelbrot, julia, bitReverse, rotateLeft, rotateRight, bitCount, parity, logistic, pulse, TAU,
+                fract, dist, cube, absDiff, xor,
+                sq, fourth, inv, median, step,
+                map, smootherstep, easeInOutQuad, lerp, rand
+              );
+            } catch (err) {
+              console.error("Eval error at", xPixel, yPixel, t, err);
+              value = 0;
+            }
+            const { r, g, b } = getColor(value);
+            const idx = (yPixel * WIDTH + xPixel) * 4;
+            data[idx] = r;
+            data[idx + 1] = g;
+            data[idx + 2] = b;
+            data[idx + 3] = 255;
+          }
+        }
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = WIDTH;
+        offCanvas.height = HEIGHT;
+        const offCtx = offCanvas.getContext('2d');
+        offCtx.putImageData(imageData, 0, 0);
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+        ctx.save();
+        ctx.translate(WIDTH / 2, HEIGHT / 2);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.transform(1, Math.tan(tilt * Math.PI / 180), Math.tan(skew * Math.PI / 180), 1, 0, 0);
+        if (perspective > 0 || perspectiveX > 0) {
+          drawPerspectiveImageXY(ctx, offCanvas, perspective, perspectiveX);
+        } else {
+          ctx.drawImage(offCanvas, -WIDTH / 2, -HEIGHT / 2);
+        }
+        ctx.restore();
+      }
+      
+      function renderFrame(timestamp) {
+        if (animateCheckbox.checked) {
+          if (!startTime) startTime = timestamp;
+          const t = (timestamp - startTime) / 1000;
+          generateArt(t);
+          animationFrameId = requestAnimationFrame(renderFrame);
+        } else {
+          generateArt(0);
+        }
+      }
+      
+      function generateAudio() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext.resume().then(() => {
+          const imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT).data;
+          const bufferLength = WIDTH * HEIGHT;
+          const buffer = audioContext.createBuffer(1, bufferLength, audioContext.sampleRate);
+          const channelData = buffer.getChannelData(0);
+          for (let i = 0; i < imageData.length; i += 4) {
+            let sample;
+            if (audioMode === "binary") {
+              sample = imageData[i] === 255 ? 1 : -1;
+            } else {
+              sample = (imageData[i] / 255) * 2 - 1;
+            }
+            channelData[i / 4] = sample;
+          }
+          const source = audioContext.createBufferSource();
+          source.buffer = buffer;
+          source.connect(audioContext.destination);
+          source.start();
+        }).catch(error => console.error('Audio error:', error));
+      }
+      
+      function audioBufferToWav(buffer) {
+        const numChannels = buffer.numberOfChannels;
+        const sampleRate = buffer.sampleRate;
+        const length = buffer.length;
+        const bytesPerSample = 2;
+        const bitsPerSample = 16;
+        const blockAlign = numChannels * bytesPerSample;
+        const byteRate = sampleRate * blockAlign;
+        const dataSize = length * blockAlign;
+        const arrayBuffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(arrayBuffer);
+        function writeString(view, offset, string) {
+          for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+          }
+        }
+        writeString(view, 0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(view, 8, 'WAVE');
+        writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bitsPerSample, true);
+        writeString(view, 36, 'data');
+        view.setUint32(40, dataSize, true);
+        const channels = [];
+        for (let i = 0; i < numChannels; i++) {
+          channels.push(buffer.getChannelData(i));
+        }
+        let offset = 44;
+        for (let i = 0; i < length; i++) {
+          for (let channel = 0; channel < numChannels; channel++) {
+            const sample = Math.max(-1, Math.min(1, channels[channel][i]));
+            const int16Sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+            view.setInt16(offset, int16Sample, true);
+            offset += 2;
+          }
+        }
+        return new Blob([view], { type: 'audio/wav' });
+      }
+      
+      function downloadAudio() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext.resume().then(() => {
+          const imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT).data;
+          const bufferLength = WIDTH * HEIGHT;
+          const buffer = audioContext.createBuffer(1, bufferLength, audioContext.sampleRate);
+          const channelData = buffer.getChannelData(0);
+          for (let i = 0; i < imageData.length; i += 4) {
+            let sample;
+            if (audioMode === "binary") {
+              sample = imageData[i] === 255 ? 1 : -1;
+            } else {
+              sample = (imageData[i] / 255) * 2 - 1;
+            }
+            channelData[i / 4] = sample;
+          }
+          const wavBlob = audioBufferToWav(buffer);
+          const url = URL.createObjectURL(wavBlob);
+          const link = document.createElement('a');
+          link.download = `bitart-audio-${Date.now()}.wav`;
+          link.href = url;
+          link.click();
+          URL.revokeObjectURL(url);
+        }).catch(error => console.error('Audio error:', error));
+      }
+      
+      function toggleRecording() {
+        if (!recording) {
+          const stream = canvas.captureStream(30);
+          recordedChunks = [];
+          mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm" });
+          mediaRecorder.ondataavailable = event => {
+            if (event.data.size > 0) recordedChunks.push(event.data);
+          };
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: "video/webm" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bitart-animation-${Date.now()}.webm`;
+            a.click();
+            URL.revokeObjectURL(url);
+          };
+          mediaRecorder.start();
+          recording = true;
+          recordButton.textContent = "Stop Recording";
+        } else {
+          mediaRecorder.stop();
+          recording = false;
+          recordButton.textContent = "Start Recording";
+        }
+      }
+      
+      function transitionAlgorithm() {
+        canvas.style.opacity = 0;
+        setTimeout(() => {
+          generateNewAlgorithm();
+          canvas.style.opacity = 1;
+        }, 1000);
+      }
+      
+      // --- Event Listeners ---
+      resolutionSlider.addEventListener('input', function() {
+        WIDTH = parseInt(this.value);
+        HEIGHT = parseInt(this.value);
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+        resolutionValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      zoomSlider.addEventListener('input', function() {
+        zoom = parseFloat(this.value);
+        zoomValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      panXSlider.addEventListener('input', function() {
+        panX = parseFloat(this.value);
+        panXValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      panYSlider.addEventListener('input', function() {
+        panY = parseFloat(this.value);
+        panYValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      zSlider.addEventListener('input', function() {
+        z = parseFloat(this.value);
+        zValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      rotateSlider.addEventListener('input', function() {
+        rotation = parseFloat(this.value);
+        rotateValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      tiltSlider.addEventListener('input', function() {
+        tilt = parseFloat(this.value);
+        tiltValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      skewSlider.addEventListener('input', function() {
+        skew = parseFloat(this.value);
+        skewValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      hueSlider.addEventListener('input', function() {
+        hueValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      seedSlider.addEventListener('input', function() {
+        seedVal = parseInt(this.value);
+        seedValue.textContent = this.value;
+      });
+      
+      perspectiveSlider.addEventListener('input', function() {
+        perspective = parseFloat(this.value);
+        perspectiveValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      perspectiveXSlider.addEventListener('input', function() {
+        perspectiveX = parseFloat(this.value);
+        perspectiveXValue.textContent = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      complexitySlider.addEventListener('input', function() {
+        maxDepth = parseInt(this.value);
+        complexityValue.textContent = this.value;
+      });
+      
+      audioModeSelect.addEventListener('change', function() {
+        audioMode = this.value;
+      });
+      
+      colorModeSelect.addEventListener('change', function() {
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      animateCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          startTime = null;
+          animationFrameId = requestAnimationFrame(renderFrame);
+        } else {
+          if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+          }
+          generateArt(0);
+        }
+      });
+      
+      newAlgorithmBtn.addEventListener('click', generateNewAlgorithm);
+      transitionAlgorithmBtn.addEventListener('click', transitionAlgorithm);
+      downloadArtBtn.addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = `bitart-${Date.now()}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+      generateAudioBtn.addEventListener('click', generateAudio);
+      downloadAudioBtn.addEventListener('click', downloadAudio);
+      recordButton.addEventListener('click', toggleRecording);
+      
+      algorithmInput.addEventListener('input', function() {
+        currentAlgorithm = this.value;
+        if (!animateCheckbox.checked) generateArt(0);
+      });
+      
+      shareAlgorithmBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(currentAlgorithm).then(() => {
+          alert("Algorithm copied to clipboard!");
+        }).catch(err => {
+          alert("Failed to copy algorithm.");
+        });
+      });
+      
+      // --- Initialization ---
+      if (!currentAlgorithm) {
+        currentAlgorithm = "sin(x+t)*cos(y+t)";
+        algorithmInput.value = currentAlgorithm;
+      }
+      if (!animateCheckbox.checked) {
+        generateArt(0);
+      } else {
+        animationFrameId = requestAnimationFrame(renderFrame);
+      }
+      
+    })();
+  </script>
+</body>
+</html>
